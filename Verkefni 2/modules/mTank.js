@@ -23,23 +23,35 @@ document.getElementById('TankBody').appendChild(TankImage)
 
 //Tank functions
 mTank.prototype.move_right = function () {
-	this.x += 1;
-	document.getElementById('TankBody').style.left = this.x
+	this.x += 1;	
+	if(this.x >= 301){alert("you can't go any further")}	
+	else{
+		document.getElementById('TankBody').style.left = this.x + "px";
+	}
 };
 
 mTank.prototype.move_left = function () {
 	this.x -= 1;
-	//document.getElementById('TankBody').style.left = this.x
+	if(this.x <= 0){alert("you cant go any further")}
+	else{
+		document.getElementById('TankBody').style.left = this.x + "px";
+	}
 };
 
 mTank.prototype.move_down = function () {
-	this.y -= 1;
-	//document.getElementById('TankBody').style.left = this.y
+	this.y += 1;
+	if(this.y >= 301){alert("you can't go any further")}
+	else{
+		document.getElementById('TankBody').style.top = this.y + "px";
+	}
 };
 
 mTank.prototype.move_up = function () {
-	this.y += 1;
-	//document.getElementById('TankBody').style.left = this.y
+	this.y -= 1;
+	if(this.y <= 0){alert("you cant go any further")}
+	else{
+		document.getElementById('TankBody').style.top = this.y + "px";
+	}
 };
 
 mTank.prototype.Shoot = function () {
@@ -62,8 +74,8 @@ function key_pressed(event){
 										//wont work for numpad and special symbols
 	if(KeyNumber == 87){AorusTank.move_up();};
 	if(KeyNumber == 65){AorusTank.move_left();};
-	if(KeyNumber == 83){AorusTank.move_right();};
-	if(KeyNumber == 68){AorusTank.move_down();};
+	if(KeyNumber == 68){AorusTank.move_right();};
+	if(KeyNumber == 83){AorusTank.move_down();};
 	if(KeyNumber == 70){AorusTank.Shoot();};
 
 };
