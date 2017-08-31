@@ -4,18 +4,25 @@
 	<title></title>
 </head>
 	<body>
-		<script type="text/javascript">
+		<script type="text/javascript" src="modules/mTank.js">
 		
-		
+		window.onload = function(){
+			//tanks made		
+			var AorusTank = new mTank({id:'Aorus'});
+			var PancakeTank = new mTank({id:'Pancake'});
+			var CenzuoTank = new mTank({id:'Cenzuo'});
 
-
-
-
-
-
-
-
-
+			AorusTank.move_right();
+			PancakeTank.move_down();
+			
+			AorusTank.PrintPositon();
+			PancakeTank.PrintPositon();
+			CenzuoTank.PrintPositon();
+			
+			AorusTank.Shoot();
+			PancakeTank.Shoot();
+			CenzuoTank.Shoot();
+			};
 		</script>
 	</body>
 </html>
