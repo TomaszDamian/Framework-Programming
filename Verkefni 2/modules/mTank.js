@@ -1,5 +1,3 @@
-
-
 //object basic made
 function mTank(args){
 	this.id = args.id;
