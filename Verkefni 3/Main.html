@@ -5,6 +5,44 @@
 </head>
 	<body>
 	<script type="text/javascript">
+	function mtable(){
+		var cdiv=document.createElement('TABLE');
+		this.node=cdiv;
+		cdiv.id = 'table';
+		document.body.appendChild(cdiv);
+		for(rowAmount = 0; rowAmount < 1; rowAmount++){
+			var cRow = document.createElement('TR');
+			cRow.id = 'Row';
+			document.getElementById('table').appendChild(cRow);
+			
+			for(LineAmount = 0; LineAmount < 2; LineAmount++){
+				var Cline = document.createElement('TD');
+				document.getElementById('Row').appendChild(Cline);
+			
+			};
+		};
+	};
+
+	mtable.prototype.hi=function(){};
+
+	window.onload = function(){
+
+		var ctable = new mtable({});
+		//var ntable = new mtable({});
+		
+		var cdelay = 1000;
+		var ndelay = 3000;
+		
+		var cthis = this;
+		
+		/*setTimeout(function(){
+			ctable.node.innerHTML='timinn lidinn';
+		},cdelay);
+
+		setTimeout(function(){
+			ntable.node.innerHTML = 'times up';
+		},ndelay);*/
+	};
 	</script>
 	</body>
 </html>
