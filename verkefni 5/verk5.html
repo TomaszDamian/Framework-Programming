@@ -2,11 +2,12 @@
 window.onload=function(){
 var canvas=document.createElement('canvas');
 canvas.id='thecanvas';
-canvas.width='200';
-canvas.height='200';
+canvas.width='800';
+canvas.height='800';
 canvas.style.border='1px solid red';
 
 document.body.appendChild(canvas);
+var ctx = canvas.getContext("2d");
 
 box = function(args){
 	var x = args.x;
@@ -14,54 +15,57 @@ box = function(args){
 	var width = args.width;
 	var height = args.height;
 	var Color = true;
-	var ctx = canvas.getContext("2d");
 	var speed = 1;
-
+	var degree = 10;
+	
+	ctx.translate(canvas.width/2,canvas.height/2)
+	
 	this.x = x;
 	this.y = y;
 	this.width = width;
 	this.height = height;
 	this.boxColor = Color;
-	this.ctx = ctx;
-	this.speed = speed
+	this.speed = speed;
+	this.deg = degree;
 }
 
 box.prototype.Draw = function(args){
 	var canvas=args.on_canvas;
-	this.ctx.fillRect(this.x,this.y,this.height,this.width);
-	this.ctx.fillStyle =(this.Rcolor);
+	ctx.fillRect(this.x,this.y,this.height,this.width);
+	ctx.fillStyle =(this.Rcolor);
 };
 box.prototype.ChangeSize = function(){
 	this.height += 10;
 	this.width += 10;
-	this.ctx.fillRect(this.x,this.y,this.height,this.width);
+	ctx.fillRect(this.x,this.y,this.height,this.width);
 };
 box.prototype.ChangeColor = function() {
 	if(this.boxColor){
-		this.ctx.fillStyle = "red";
+		ctx.fillStyle = "red";
 		this.boxColor = false;
 	}
 	else{
-		this.ctx.fillStyle = "black";
+		ctx.fillStyle = "black";
 		this.boxColor = true;
 	}
 };
 box.prototype.changePosition = function() {
-	this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	//this.x += this.speed;
 	//this.speed += 1;
-	this.ctx.rotate(Math.PI/2)
-	this.ctx.fillRect(this.x,this.y,this.width,this.height)	
+	ctx.rotate(this.deg*Math.PI/180);
+	ctx.fillRect(0,0,this.width,this.height)
 };
+
 black_box = new box({x:100,y:100,width:10,height:10});
 
 black_box.Draw({on_canvas:canvas});
 
-setInterval(function(){
+var Calling = setInterval(function(){
 	black_box.changePosition();
 	//black_box.ChangeSize();
 	//black_box.ChangeColor();
-},100)
+},30)
 
 
 /*setInterval(function(){
