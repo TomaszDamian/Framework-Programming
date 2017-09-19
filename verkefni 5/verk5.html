@@ -52,7 +52,8 @@ box.prototype.ChangeColor = function() {
 box.prototype.changePosition = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	//this.x += this.speed;
-	//this.speed += 1;
+	//this.speed += 1;		
+	//comment out `ctx.rotate` and uncomment line 56 nad 54 and the line above to get a accelerating box moving to the right
 	ctx.rotate(this.deg*Math.PI/180);
 	ctx.fillRect(0,0,this.width,this.height)
 };
@@ -63,27 +64,12 @@ black_box.Draw({on_canvas:canvas});
 
 var Calling = setInterval(function(){
 	black_box.changePosition();
-	//black_box.ChangeSize();
-	//black_box.ChangeColor();
+	//black_box.ChangeSize();			//changes Size of the box
+	//black_box.ChangeColor();			//changes the color
+	//please do not mix all of these together it will fuck up
 },30)
 
 
-/*setInterval(function(){
-	RRandom = Math.floor(Math.random() * 256)
-	GRandom = Math.floor(Math.random() * 256)
-	BRandom = Math.floor(Math.random() * 256)
-	var ctx = canvas.getContext("2d");
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.fillStyle = "rgb(" + RRandom + "," + GRandom + "," + BRandom + ")";
-	ctx.fillRect(0,0,Length,Width);
-	if(Length <= 0){Grow = 1;}
-	else if(Length >= 200){Grow = 0;}
-	if (Grow == 1) {Length += 1;Width += 1;}
-	else if (Grow == 0){Length -= 1;Width -= 1;}
-})
-var Length = 200
-var Width = 200
-var Grow = 0*/
 }
 </script>
 
