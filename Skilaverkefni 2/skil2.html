@@ -1,0 +1,35 @@
+<script type="text/javascript">
+window.onload=function(){
+	var canvas=document.createElement('canvas');
+	var ctx = canvas.getContext("2d");
+	canvas.id='thecanvas';
+	canvas.width='800';
+	canvas.height='800';
+	canvas.style.border='1px solid red';
+	img = new Image()
+	img.src = 'TankOne.png'
+	ctx.drawImage(img,100,100,50,50);
+
+	document.body.appendChild(canvas);
+
+	
+	tank = function(args){
+		var x = args.x;
+		var y = args.y;
+		var width = args.width;
+		var height = args.height;
+		var Color = true;
+		var speed = 1;
+		var degree = 10;
+		
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.boxColor = Color;
+		this.speed = speed;
+		this.deg = degree;
+	}
+	TankOne = new tank({x:10,y:10,width:50,height:50});
+}
+</script>

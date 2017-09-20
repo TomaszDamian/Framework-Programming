@@ -18,7 +18,7 @@ box = function(args){
 	var speed = 1;
 	var degree = 10;
 	
-	ctx.translate(canvas.width/2,canvas.height/2);
+	ctx.translate(100,100);
 	
 	this.x = x;
 	this.y = y;
@@ -55,19 +55,14 @@ box.prototype.changePosition = function() {
 	//this.speed += 1;		
 	//comment out `ctx.rotate` and uncomment line 56 nad 54 and the line above to get a accelerating box moving to the right
 	ctx.rotate(this.deg*Math.PI/180);
-	ctx.fillRect(0,0,this.width,this.height)
+	ctx.fillRect(-50,-50,this.width,this.height)
 };
 
-black_box = new box({x:100,y:100,width:10,height:10});
+black_box = new box({x:100,y:100,width:100,height:100});
 
 black_box.Draw({on_canvas:canvas});
-variable = 0
 var Calling = setInterval(function(){
 	black_box.changePosition();
-	variable += 1
-	if(variable == 25){
-		clearInterval(Calling)
-	}
 	//black_box.ChangeSize();			//changes Size of the box
 	//black_box.ChangeColor();			//changes the color
 	//please do not mix all of these together it will fuck up
