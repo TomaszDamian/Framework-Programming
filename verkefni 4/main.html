@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+	<body>
+	<p id="timer"></p>
+		<script type="text/javascript">
+			TableNode = document.createElement("TABLE")
+			TableNode.id = "table"
+			document.body.appendChild(TableNode)
+
+			var timerCounter = 0
+			var CellCounter = 10
+			var RowCounter = 0
+			var TimerCountingStarts = setInterval(function()
+			{
+				
+				CellCounter = CellCounter + 1
+				timerCounter = timerCounter + 1
+				if (CellCounter >= 10){
+					RowCounter += 1
+					tableRow = document.createElement("TR")
+					tableRow.id = "row" + RowCounter
+					document.getElementById('table').appendChild(tableRow)
+					CellCounter = 0
+					
+				};
+				
+				var CellId = "row" + RowCounter
+				var node = document.createElement("TD");
+				
+				textNode = document.createTextNode(timerCounter)
+				node.appendChild(textNode)
+				document.getElementById(CellId).appendChild(node);
+				//createNumberNode = document.createTextNode(timerCounter)
+				document.getElementById("timer").innerHTML = timerCounter 
+				if(timerCounter >= 100){
+					clearInterval(TimerCountingStarts)
+				};
+			},100);
+		</script>
+	</body>
+</html>
