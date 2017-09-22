@@ -11,6 +11,7 @@ window.onload=function(){
 	document.body.appendChild(canvas);
 	
 	function canvasClear(){
+		//made to just clear the canvas so the tanks could be redrawn
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
@@ -22,7 +23,7 @@ window.onload=function(){
 		var ImageLink = args.ImageLink;
 		img = new Image()
 		img.src = ImageLink
-
+		
 		this.image = img
 		this.x = x;
 		this.y = y;
@@ -30,8 +31,12 @@ window.onload=function(){
 		this.height = height;
 		this.ImageLink = ImageLink;
 		this.deg = 0
+		this.angles_left_to_turn_left = 0
+		this.angles_left_to_turn_right = 0
 	}
-	tank.prototype.Draw = function(args) {		
+	tank.prototype.Draw = function(args) {
+		//Made it so there is no Clear canvas in the Draw function
+		//Draw shouldn't also erase the canvas		
 		ctx.save();
 		var cheight = -50;
 		var cwidth = -50;
@@ -42,53 +47,65 @@ window.onload=function(){
 		ctx.restore();
 	};
 	tank.prototype.rotateLeft = function() {
-		this.deg += 1
+		this.deg += 22.5;
 	};
+	tank.prototype.rotateRight = function() {
+		this.deg -= 22.5;
+	};
+
 	tank.prototype.implement_physical_laws = function() {
-		//ef hann hefur einhver angles left to turn.
-		//uppfaerum vid angle,
-		//og nidurfaerum vid angles left to turn.
-		if(this.angles_left_to_turn != 0)
-		{this.rotateLeft();}
-		}
+		//If the Tank still has Angles_lef_to_turn_x.
+		//decrease Angels_left_to_turn_x and,
+		//increase/decrease this.deg by calling this.rotateLeft/right();.
+		if(this.angles_left_to_turn_left != 0){
+			this.angles_left_to_turn_left -= 1;
+			this.rotateLeft();
+		};
+		//works the same as the one above.
+		//this one just makes it rotate to the right
+		if(this.angles_left_to_turn_right != 0){
+			this.angles_left_to_turn_right -= 1;
+			this.rotateRight();
+		};
+	};
 
 	TankOne = new tank({x:100,y:150,width:100,height:100,ImageLink:"TankOne.png"});
 	TankTwo = new tank({x:500,y:500,width:100,height:100,ImageLink:"TankTwo.png"});
 	
+	//setTimeout to let the image load before drawing it
 	setTimeout(function(){
 		setInterval(function(){
 			//clear canvas..
 			canvasClear();
-			TankOne.Draw({tank_number:1});
-			TankTwo.Draw({tank_number:2});
+			
+			//Draw the Tanks on the canvas..
+			TankOne.Draw();
+			TankTwo.Draw();
 
-			//
+			//turning made possible
 			TankOne.implement_physical_laws()
+			TankTwo.implement_physical_laws()
 		},24);
 	},200)
 	
-
 	document.onkeydown = keypressed;
 	function keypressed(event){
-		KeyNumber = event.keyCode;		
-		if(KeyNumber == 49){
-			//herna viljum vid snua.
-			//skellum bara.. gradunum sem vid viljum ad hann snui um..
-			//a skriddrekann.
-			TankOne.angles_left_to_turn = 90;
-/*
-			var Turning = setInterval(function(){
-				TurningPoint += 1
-				if (TurningPoint == 90) {	
-					clearInterval(Turning);
-					TurningPoint = 0;
-					TankOne.rotateLeft();
-				};
-			});
-*/
+		KeyNumber = event.keyCode;
+		console.log(KeyNumber)	
+		if(KeyNumber == 65){
+			//you want to turn here.
+			//put in the amount of times the function has to be called.
+			//on the tank.
+			TankOne.angles_left_to_turn_left = 4;
+		} else if(KeyNumber == 68){
+			TankOne.angles_left_to_turn_right = 4;
+		}
+
+		if(KeyNumber == 37){
+			TankTwo.angles_left_to_turn_left = 4;
+		} else if(KeyNumber == 39){
+			TankTwo.angles_left_to_turn_right = 4;
 		}
 	}
-	
-
 }
 </script>
