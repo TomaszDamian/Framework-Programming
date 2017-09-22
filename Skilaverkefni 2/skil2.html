@@ -2,53 +2,93 @@
 window.onload=function(){
 	var canvas=document.createElement('canvas');
 	var ctx = canvas.getContext("2d");
+	var TurningPoint = 0
+
 	canvas.id='thecanvas';
 	canvas.width='800';
 	canvas.height='800';
 	canvas.style.border='1px solid red';
 	document.body.appendChild(canvas);
+	
+	function canvasClear(){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	}
+
 	tank = function(args){
 		var x = args.x;
 		var y = args.y;
 		var width = args.width;
 		var height = args.height;
 		var ImageLink = args.ImageLink;
-		
+		img = new Image()
+		img.src = ImageLink
+
+		this.image = img
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.ImageLink = ImageLink;
+		this.deg = 0
 	}
-	tank.prototype.DrawTank = function() {
-		var cthis=this;
-		img = new Image()
-		img.src = cthis.ImageLink
-		img.onload = function(){		
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	tank.prototype.Draw = function(args) {		
 		ctx.save();
-		cthis = this;
-		var cheight = this.height/2
-		var cwidth = this.width/2
-		ctx.translate(this.x,this.y)
-		ctx.rotate(20*Math.PI/180);
-		ctx.drawImage(img,cheight,cwidth,100,100)
-		ctx.translate(0,0)
+		var cheight = -50;
+		var cwidth = -50;
+		ctx.translate(this.x,this.y);
+		ctx.rotate(this.deg*Math.PI/180);
+		ctx.drawImage(this.image,cheight,cwidth,100,100);
+		ctx.translate(0,0);
 		ctx.restore();
-		}
 	};
 	tank.prototype.rotateLeft = function() {
-		
+		this.deg += 1
 	};
+	tank.prototype.implement_physical_laws = function() {
+		//ef hann hefur einhver angles left to turn.
+		//uppfaerum vid angle,
+		//og nidurfaerum vid angles left to turn.
+		if(this.angles_left_to_turn != 0)
+		{this.rotateLeft();}
+		}
+
+	TankOne = new tank({x:100,y:150,width:100,height:100,ImageLink:"TankOne.png"});
+	TankTwo = new tank({x:500,y:500,width:100,height:100,ImageLink:"TankTwo.png"});
 	
-	TankOne = new tank({x:0,y:0,width:100,height:100,ImageLink:"TankOne.png"});
-	//TankTwo = new tank({x:800,y:800,width:100,height:100,ImageLink:"TankTwo.png"});
 	setTimeout(function(){
-		setInterval(function() {
-			TankOne.DrawTank();
-		},25)	
-		//TankTwo.DrawTank();
-		TankOne.rotateLeft();
+		setInterval(function(){
+			//clear canvas..
+			canvasClear();
+			TankOne.Draw({tank_number:1});
+			TankTwo.Draw({tank_number:2});
+
+			//
+			TankOne.implement_physical_laws()
+		},24);
 	},200)
+	
+
+	document.onkeydown = keypressed;
+	function keypressed(event){
+		KeyNumber = event.keyCode;		
+		if(KeyNumber == 49){
+			//herna viljum vid snua.
+			//skellum bara.. gradunum sem vid viljum ad hann snui um..
+			//a skriddrekann.
+			TankOne.angles_left_to_turn = 90;
+/*
+			var Turning = setInterval(function(){
+				TurningPoint += 1
+				if (TurningPoint == 90) {	
+					clearInterval(Turning);
+					TurningPoint = 0;
+					TankOne.rotateLeft();
+				};
+			});
+*/
+		}
+	}
+	
+
 }
 </script>
