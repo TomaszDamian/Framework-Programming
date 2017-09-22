@@ -96,15 +96,23 @@ window.onload=function(){
 			//you want to turn here.
 			//put in the amount of times the function has to be called.
 			//on the tank.
-			TankOne.angles_left_to_turn_left = 4;
+			if(TankOne.angles_left_to_turn_left === 0){
+				TankOne.angles_left_to_turn_left = 4;
+			};
 		} else if(KeyNumber == 68){
-			TankOne.angles_left_to_turn_right = 4;
+			if(TankOne.angles_left_to_turn_right === 0){
+				TankOne.angles_left_to_turn_right = 4;
+			};
 		}
 
 		if(KeyNumber == 37){
-			TankTwo.angles_left_to_turn_left = 4;
+			if(TankOne.angles_left_to_turn_left === 0){
+				TankOne.angles_left_to_turn_left = 4;
+			};
 		} else if(KeyNumber == 39){
-			TankTwo.angles_left_to_turn_right = 4;
+			if(TankOne.angles_left_to_turn_right === 0){
+				TankOne.angles_left_to_turn_right = 4;
+			};
 		}
 	}
 }
