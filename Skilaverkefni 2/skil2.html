@@ -163,17 +163,14 @@ window.onload=function(){
 			//a key
 			case 65:
 				if(TankOne.angles_left_to_turn_right === 0){
-					TankTwo.TurningRight = 1;
-					
+					TankTwo.TurningRight = 1;	
 				};
 				break;
 
 			//d key
 			case 68:
 				if(TankOne.angles_left_to_turn_left === 0){
-					TankOne.TurningLeft = 1;
-					
-					
+					TankOne.TurningLeft = 1;	
 				};
 				break;
 
@@ -181,7 +178,6 @@ window.onload=function(){
 			case 87:
 				if (TankOne.angles_left_to_turn_right === 0 && TankOne.angles_left_to_turn_left === 0){
 					TankOne.ForwardPedalDown = 1;
-					console.log("hello")
 				}
 				break;
 
@@ -194,8 +190,6 @@ window.onload=function(){
 			case 37:
 				if(TankTwo.angles_left_to_turn_right === 0){
 					TankTwo.TurningRight = 1;
-					
-					console.log(TankTwo.FacingDirection)
 				};
 				break;
 			
@@ -203,8 +197,6 @@ window.onload=function(){
 			case 39:
 				if(TankTwo.angles_left_to_turn_left === 0){
 					TankTwo.TurningLeft = 1;
-					
-					console.log(TankTwo.FacingDirection)
 				};
 				
 				break;
