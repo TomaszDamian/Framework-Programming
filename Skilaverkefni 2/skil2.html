@@ -56,16 +56,16 @@ window.onload=function(){
 		//https://i.imgur.com/xI9DdKz.png
 		//reference as to what direction is forward
 		if(this.FacingDirection === 0){
-			this.x += 5;
+			this.x += 10;
 		}
 		else if(this.FacingDirection === 1){
-			this.y += 5;
+			this.y += 10;
 		}
 		else if(this.FacingDirection === 2){
-			this.x -= 5;
+			this.x -= 10;
 		}
 		else if(this.FacingDirection === 3){
-			this.y -= 5
+			this.y -= 10;
 		}
 	};
 	tank.prototype.moveBackwards = function() {
@@ -115,8 +115,42 @@ window.onload=function(){
 			TankOne.implement_physical_laws()
 			TankTwo.implement_physical_laws()
 
+			// forward and backwards movement
 			if(TankOne.ForwardPedalDown === 1){
 				TankOne.moveForward();
+			} else if(TankOne.BackwardsPedalDown === 1){
+				TankOne.moveBackwards();
+			} else if(TankTwo.ForwardPedalDown === 1){
+				TankTwo.moveForward();
+			} else if(TankTwo.BackwardsPedalDown === 1){
+				TankTwo.moveBackwards();
+			}
+
+			//Side to side animations
+			if(TankOne.TurningRight === 1 && TankOne.angles_left_to_turn_right === 0){
+				TankOne.angles_left_to_turn_right = 15;
+				TankOne.FacingDirection +=1
+				if(TankOne.FacingDirection === 4){
+					TankOne.FacingDirection = 0
+				};
+			} else if(TankOne.TurningLeft === 1 && TankOne.angles_left_to_turn_left === 0){
+				TankOne.angles_left_to_turn_left = 15;
+				TankOne.FacingDirection -=1
+					if(TankOne.FacingDirection === -1){
+						TankOne.FacingDirection = 3
+					};
+			} else if(TankTwo.TurningRight === 1 && TankTwo.angles_left_to_turn_right === 0){
+				TankTwo.angles_left_to_turn_right = 15;
+				TankTwo.FacingDirection +=1
+				if(TankTwo.FacingDirection === 4){
+					TankTwo.FacingDirection = 0
+				};
+			} else if(TankTwo.TurningLeft === 1 && TankTwo.angles_left_to_turn_left === 0){
+				TankTwo.angles_left_to_turn_left = 15;
+				TankTwo.FacingDirection -=1
+				if(TankTwo.FacingDirection === -1){
+					TankTwo.FacingDirection = 3
+				};
 			}
 		},25);
 	},200)
@@ -128,23 +162,18 @@ window.onload=function(){
 		switch(KeyNumber){
 			//a key
 			case 65:
-				if(TankOne.angles_left_to_turn_left === 0){
-					TankOne.angles_left_to_turn_left = 15;
-					TankOne.FacingDirection +=1
-					if(TankOne.FacingDirection === 4){
-						TankOne.FacingDirection = 0
-					};
+				if(TankOne.angles_left_to_turn_right === 0){
+					TankTwo.TurningRight = 1;
+					
 				};
 				break;
 
 			//d key
 			case 68:
-				if(TankOne.angles_left_to_turn_right === 0){
-					TankOne.angles_left_to_turn_right = 15;
-					TankOne.FacingDirection -=1
-					if(TankOne.FacingDirection === -1){
-						TankOne.FacingDirection = 3
-					};
+				if(TankOne.angles_left_to_turn_left === 0){
+					TankOne.TurningLeft = 1;
+					
+					
 				};
 				break;
 
@@ -163,23 +192,19 @@ window.onload=function(){
 
 			// left arrow
 			case 37:
-				if(TankTwo.angles_left_to_turn_left === 0){
-					TankTwo.angles_left_to_turn_left = 15;
-					TankTwo.FacingDirection +=1
-					if(TankTwo.FacingDirection === 4){
-						TankTwo.FacingDirection = 0
-					};
+				if(TankTwo.angles_left_to_turn_right === 0){
+					TankTwo.TurningRight = 1;
+					
+					console.log(TankTwo.FacingDirection)
 				};
 				break;
 			
 			//right arrow
 			case 39:
-				if(TankTwo.angles_left_to_turn_right === 0){
-					TankTwo.angles_left_to_turn_right = 15;
-					TankTwo.FacingDirection -=1
-					if(TankTwo.FacingDirection === -1){
-						TankTwo.FacingDirection = 3
-					};
+				if(TankTwo.angles_left_to_turn_left === 0){
+					TankTwo.TurningLeft = 1;
+					
+					console.log(TankTwo.FacingDirection)
 				};
 				
 				break;
@@ -210,6 +235,29 @@ window.onload=function(){
 
 				case 83:
 					TankOne.BackwardsPedalDown = 0;
+					break;
+
+				case 68:
+					TankOne.TurningLeft = 0;
+					break;
+				
+				case 65:
+					TankOne.TurningRight = 0;
+
+				case 38:
+					TankTwo.ForwardPedalDown = 0;
+					break;
+
+				case 40:
+					TankTwo.BackwardsPedalDown = 0;
+					break;
+				
+				case 37:
+					TankTwo.TurningRight = 0;
+					break;
+
+				case 39:
+					TankTwo.TurningLeft = 0;
 					break;
 			}
 		}
