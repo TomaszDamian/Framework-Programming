@@ -47,25 +47,25 @@ window.onload=function(){
 		ctx.restore();
 	};
 	tank.prototype.rotateLeft = function() {
-		this.deg += 22.5;
+		this.deg += 6;
 	};
 	tank.prototype.rotateRight = function() {
-		this.deg -= 22.5;
+		this.deg -= 6;
 	};
 	tank.prototype.moveForward = function() {
 		//https://i.imgur.com/xI9DdKz.png
 		//reference as to what direction is forward
 		if(this.FacingDirection === 0){
-			this.x += 10;
+			this.x += 5;
 		}
 		else if(this.FacingDirection === 1){
-			this.y += 10;
+			this.y += 5;
 		}
 		else if(this.FacingDirection === 2){
-			this.x -= 10;
+			this.x -= 5;
 		}
 		else if(this.FacingDirection === 3){
-			this.y -= 10
+			this.y -= 5
 		}
 	};
 	tank.prototype.moveBackwards = function() {
@@ -114,19 +114,22 @@ window.onload=function(){
 			//turning made possible
 			TankOne.implement_physical_laws()
 			TankTwo.implement_physical_laws()
-		},24);
+
+			if(TankOne.ForwardPedalDown === 1){
+				TankOne.moveForward();
+			}
+		},25);
 	},200)
-	
+
 	document.onkeydown = keypressed;
 	function keypressed(event) {
 		KeyNumber = event.keyCode;
 		console.log(KeyNumber);
 		switch(KeyNumber){
-			
 			//a key
 			case 65:
 				if(TankOne.angles_left_to_turn_left === 0){
-					TankOne.angles_left_to_turn_left = 4;
+					TankOne.angles_left_to_turn_left = 15;
 					TankOne.FacingDirection +=1
 					if(TankOne.FacingDirection === 4){
 						TankOne.FacingDirection = 0
@@ -137,7 +140,7 @@ window.onload=function(){
 			//d key
 			case 68:
 				if(TankOne.angles_left_to_turn_right === 0){
-					TankOne.angles_left_to_turn_right = 4;
+					TankOne.angles_left_to_turn_right = 15;
 					TankOne.FacingDirection -=1
 					if(TankOne.FacingDirection === -1){
 						TankOne.FacingDirection = 3
@@ -147,18 +150,21 @@ window.onload=function(){
 
 			//w key
 			case 87:
-				TankOne.moveForward();
+				if (TankOne.angles_left_to_turn_right === 0 && TankOne.angles_left_to_turn_left === 0){
+					TankOne.ForwardPedalDown = 1;
+					console.log("hello")
+				}
 				break;
 
 			//s key
 			case 83:
-				TankOne.moveBackwards();
+				if (TankOne.angles_left_to_turn_right === 0 && TankOne.angles_left_to_turn_left === 0){TankOne.BackwardsPedalDown = 1;}
 				break;
 
 			// left arrow
 			case 37:
 				if(TankTwo.angles_left_to_turn_left === 0){
-					TankTwo.angles_left_to_turn_left = 4;
+					TankTwo.angles_left_to_turn_left = 15;
 					TankTwo.FacingDirection +=1
 					if(TankTwo.FacingDirection === 4){
 						TankTwo.FacingDirection = 0
@@ -169,7 +175,7 @@ window.onload=function(){
 			//right arrow
 			case 39:
 				if(TankTwo.angles_left_to_turn_right === 0){
-					TankTwo.angles_left_to_turn_right = 4;
+					TankTwo.angles_left_to_turn_right = 15;
 					TankTwo.FacingDirection -=1
 					if(TankTwo.FacingDirection === -1){
 						TankTwo.FacingDirection = 3
@@ -180,12 +186,12 @@ window.onload=function(){
 
 			//up arrow 
 			case 38:
-				TankTwo.moveForward();
+				if (TankTwo.angles_left_to_turn_right === 0 && TankTwo.angles_left_to_turn_left === 0){TankTwo.ForwardPedalDown = 1;}
 				break;
 
 			//down arrow
 			case 40:
-				TankTwo.moveBackwards();
+				if (TankTwo.angles_left_to_turn_right === 0 && TankTwo.angles_left_to_turn_left === 0){TankTwo.BackwardsPedalDown = 1;}
 				break;
 
 
@@ -195,6 +201,14 @@ window.onload=function(){
 				TankTwo = new tank({x:500,y:500,width:100,height:100,ImageLink:"https://i.imgur.com/QQfvIjZ.png",Direction:2});
 				break;
 		};
+		document.onkeyup = KeyReleased;
+		function KeyReleased(event){
+			switch(event.keyCode){
+				case 87:
+					TankOne.ForwardPedalDown = 0;
+					break;
+			}
+		}
 	};
 }
 </script>
