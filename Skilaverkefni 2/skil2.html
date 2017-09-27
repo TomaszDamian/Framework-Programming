@@ -118,38 +118,43 @@ window.onload=function(){
 			// forward and backwards movement
 			if(TankOne.ForwardPedalDown === 1){
 				TankOne.moveForward();
-			} else if(TankOne.BackwardsPedalDown === 1){
+			} 
+			if(TankOne.BackwardsPedalDown === 1){
 				TankOne.moveBackwards();
-			} else if(TankTwo.ForwardPedalDown === 1){
+			} 
+			if(TankTwo.ForwardPedalDown === 1){
 				TankTwo.moveForward();
-			} else if(TankTwo.BackwardsPedalDown === 1){
+			} 
+			if(TankTwo.BackwardsPedalDown === 1){
 				TankTwo.moveBackwards();
 			}
 
 			//Side to side animations
 			if(TankOne.TurningRight === 1 && TankOne.angles_left_to_turn_right === 0){
 				TankOne.angles_left_to_turn_right = 15;
-				TankOne.FacingDirection +=1
-				if(TankOne.FacingDirection === 4){
-					TankOne.FacingDirection = 0
+				TankOne.FacingDirection -=1
+				if(TankOne.FacingDirection === -1){
+					TankOne.FacingDirection = 3
 				};
+				
 			} else if(TankOne.TurningLeft === 1 && TankOne.angles_left_to_turn_left === 0){
 				TankOne.angles_left_to_turn_left = 15;
-				TankOne.FacingDirection -=1
-					if(TankOne.FacingDirection === -1){
-						TankOne.FacingDirection = 3
+				TankOne.FacingDirection +=1
+					if(TankOne.FacingDirection === 4){
+						TankOne.FacingDirection = 0
 					};
 			} else if(TankTwo.TurningRight === 1 && TankTwo.angles_left_to_turn_right === 0){
 				TankTwo.angles_left_to_turn_right = 15;
-				TankTwo.FacingDirection +=1
-				if(TankTwo.FacingDirection === 4){
-					TankTwo.FacingDirection = 0
-				};
-			} else if(TankTwo.TurningLeft === 1 && TankTwo.angles_left_to_turn_left === 0){
-				TankTwo.angles_left_to_turn_left = 15;
 				TankTwo.FacingDirection -=1
 				if(TankTwo.FacingDirection === -1){
 					TankTwo.FacingDirection = 3
+				};
+				
+			} else if(TankTwo.TurningLeft === 1 && TankTwo.angles_left_to_turn_left === 0){
+				TankTwo.angles_left_to_turn_left = 15;
+				TankTwo.FacingDirection +=1
+				if(TankTwo.FacingDirection === 4){
+					TankTwo.FacingDirection = 0
 				};
 			}
 		},25);
@@ -157,13 +162,12 @@ window.onload=function(){
 
 	document.onkeydown = keypressed;
 	function keypressed(event) {
-		KeyNumber = event.keyCode;
-		console.log(KeyNumber);
+		KeyNumber = event.keyCode;		
 		switch(KeyNumber){
 			//a key
 			case 65:
 				if(TankOne.angles_left_to_turn_right === 0){
-					TankTwo.TurningRight = 1;	
+					TankOne.TurningRight = 1;	
 				};
 				break;
 
@@ -176,16 +180,17 @@ window.onload=function(){
 
 			//w key
 			case 87:
-				if (TankOne.angles_left_to_turn_right === 0 && TankOne.angles_left_to_turn_left === 0){
-					TankOne.ForwardPedalDown = 1;
-				}
+				TankOne.ForwardPedalDown = 1;
+				console.log(TankOne.ForwardPedalDown)			
 				break;
 
 			//s key
 			case 83:
-				if (TankOne.angles_left_to_turn_right === 0 && TankOne.angles_left_to_turn_left === 0){TankOne.BackwardsPedalDown = 1;}
+				TankOne.BackwardsPedalDown = 1;			
 				break;
+			}
 
+			switch(KeyNumber){
 			// left arrow
 			case 37:
 				if(TankTwo.angles_left_to_turn_right === 0){
@@ -198,17 +203,16 @@ window.onload=function(){
 				if(TankTwo.angles_left_to_turn_left === 0){
 					TankTwo.TurningLeft = 1;
 				};
-				
 				break;
 
 			//up arrow 
 			case 38:
-				if (TankTwo.angles_left_to_turn_right === 0 && TankTwo.angles_left_to_turn_left === 0){TankTwo.ForwardPedalDown = 1;}
+				TankTwo.ForwardPedalDown = 1;
 				break;
 
 			//down arrow
 			case 40:
-				if (TankTwo.angles_left_to_turn_right === 0 && TankTwo.angles_left_to_turn_left === 0){TankTwo.BackwardsPedalDown = 1;}
+				TankTwo.BackwardsPedalDown = 1;
 				break;
 
 
@@ -218,9 +222,17 @@ window.onload=function(){
 				TankTwo = new tank({x:500,y:500,width:100,height:100,ImageLink:"https://i.imgur.com/QQfvIjZ.png",Direction:2});
 				break;
 		};
+		
 		document.onkeyup = KeyReleased;
 		function KeyReleased(event){
 			switch(event.keyCode){
+				case 65:
+					TankOne.TurningRight = 0;
+
+				case 68:
+					TankOne.TurningLeft = 0;
+					break;
+
 				case 87:
 					TankOne.ForwardPedalDown = 0;
 					break;
@@ -228,22 +240,8 @@ window.onload=function(){
 				case 83:
 					TankOne.BackwardsPedalDown = 0;
 					break;
-
-				case 68:
-					TankOne.TurningLeft = 0;
-					break;
-				
-				case 65:
-					TankOne.TurningRight = 0;
-
-				case 38:
-					TankTwo.ForwardPedalDown = 0;
-					break;
-
-				case 40:
-					TankTwo.BackwardsPedalDown = 0;
-					break;
-				
+				}
+				switch(event.keyCode){
 				case 37:
 					TankTwo.TurningRight = 0;
 					break;
@@ -251,6 +249,14 @@ window.onload=function(){
 				case 39:
 					TankTwo.TurningLeft = 0;
 					break;
+
+				case 38:
+					TankTwo.ForwardPedalDown = 0;
+					break;
+
+				case 40:
+					TankTwo.BackwardsPedalDown = 0;
+					break;	
 			}
 		}
 	};
