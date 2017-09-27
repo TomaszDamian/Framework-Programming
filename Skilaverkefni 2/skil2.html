@@ -8,6 +8,7 @@ window.onload=function(){
 	canvas.width='800';
 	canvas.height='800';
 	canvas.style.border='1px solid red';
+	canvas.GameOver = 0
 	document.body.appendChild(canvas);
 	
 	function canvasClear(){
@@ -20,8 +21,12 @@ window.onload=function(){
   			TankOne.x + TankOne.width >= TankTwo.x &&
    			TankOne.y <= TankTwo.y + TankTwo.height &&
    			TankOne.height + TankOne.y >= TankTwo.y){
-				console.log("hello")
+				canvas.GameOver = 1
 			}
+	}
+	//Border collision detected
+	DetectBorderCollision = function(){
+		//some code here
 	}
 
 	tank = function(args){
@@ -48,12 +53,19 @@ window.onload=function(){
 	tank.prototype.Draw = function(args) {
 		//Made it so there is no Clear canvas in the Draw function
 		//Draw shouldn't also erase the canvas		
-		ctx.save();
-		ctx.translate(this.x,this.y);
-		ctx.rotate(this.deg*Math.PI/180);
-		ctx.drawImage(this.image,-(this.height/2),-(this.width/2),100,100);
-		ctx.translate(0,0);
-		ctx.restore();
+		if(canvas.GameOver === 1){
+			ctx.font="80px Georgia";
+			ctx.fillText("Game over",200,200);
+			ctx.fillText("Press 'R' to restart",90,400);
+		}
+		else{
+			ctx.save();
+			ctx.translate(this.x,this.y);
+			ctx.rotate(this.deg*Math.PI/180);
+			ctx.drawImage(this.image,-(this.height/2),-(this.width/2),100,100);
+			ctx.translate(0,0);
+			ctx.restore();
+		}
 	};
 	tank.prototype.rotateLeft = function() {
 		this.deg += 6;
@@ -113,8 +125,11 @@ window.onload=function(){
 	//setTimeout to let the image load before drawing it
 	setTimeout(function(){
 		setInterval(function(){
+			
 			//collision detection
 			DetectCollisionForTanks();
+			DetectBorderCollision();
+			
 			//clear canvas..
 			canvasClear();
 			
@@ -231,6 +246,7 @@ window.onload=function(){
 			case 82:
 				TankOne = new tank({x:100,y:100,width:100,height:100,ImageLink:"https://i.imgur.com/CThAYu5.png",Direction:0});
 				TankTwo = new tank({x:500,y:500,width:100,height:100,ImageLink:"https://i.imgur.com/BCBxoC1.png",Direction:2});
+				canvas.GameOver = 0
 				break;
 		};
 		
