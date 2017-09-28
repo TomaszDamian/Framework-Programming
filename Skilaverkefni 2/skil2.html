@@ -8,7 +8,7 @@ window.onload=function(){
 	canvas.width='800';
 	canvas.height='800';
 	canvas.style.border='1px solid red';
-	canvas.GameOver = 0
+	canvas.GameOver = false;
 	document.body.appendChild(canvas);
 	
 	function canvasClear(){
@@ -21,12 +21,20 @@ window.onload=function(){
   			TankOne.x + TankOne.width >= TankTwo.x &&
    			TankOne.y <= TankTwo.y + TankTwo.height &&
    			TankOne.height + TankOne.y >= TankTwo.y){
-				canvas.GameOver = 1
+				canvas.GameOver = true;
 			}
 	}
 	//Border collision detected
 	DetectBorderCollision = function(){
-		//some code here
+		if(TankOne.x + (TankOne.width/2) >= canvas.width){canvas.GameOver = true;}
+		if(TankOne.x - (TankOne.width/2) <= 0){canvas.GameOver = true;}
+		if(TankOne.y + (TankOne.height/2) >= canvas.height){canvas.GameOver = true;}
+		if(TankOne.y - (TankOne.height/2) <= 0){canvas.GameOver = true;}
+
+		if(TankTwo.x + (TankTwo.width/2) >= canvas.width){canvas.GameOver = true;}
+		if(TankTwo.x - (TankTwo.width/2) <= 0){canvas.GameOver = true;}
+		if(TankTwo.y + (TankTwo.height/2) >= canvas.height){canvas.GameOver = true;}
+		if(TankTwo.y - (TankTwo.height/2) <= 0){canvas.GameOver = true;}
 	}
 
 	tank = function(args){
@@ -53,7 +61,7 @@ window.onload=function(){
 	tank.prototype.Draw = function(args) {
 		//Made it so there is no Clear canvas in the Draw function
 		//Draw shouldn't also erase the canvas		
-		if(canvas.GameOver === 1){
+		if(canvas.GameOver){
 			ctx.font="80px Georgia";
 			ctx.fillText("Game over",200,200);
 			ctx.fillText("Press 'R' to restart",90,400);
@@ -68,10 +76,10 @@ window.onload=function(){
 		}
 	};
 	tank.prototype.rotateLeft = function() {
-		this.deg += 6;
+		this.deg += 15;
 	};
 	tank.prototype.rotateRight = function() {
-		this.deg -= 6;
+		this.deg -= 15;
 	};
 	tank.prototype.moveForward = function() {
 		//https://i.imgur.com/xI9DdKz.png
@@ -157,27 +165,27 @@ window.onload=function(){
 
 			//Side to side animations
 			if(TankOne.TurningRight === 1 && TankOne.angles_left_to_turn_right === 0){
-				TankOne.angles_left_to_turn_right = 15;
+				TankOne.angles_left_to_turn_right = 6;
 				TankOne.FacingDirection -=1
 				if(TankOne.FacingDirection === -1){
 					TankOne.FacingDirection = 3
 				};
 				
 			} else if(TankOne.TurningLeft === 1 && TankOne.angles_left_to_turn_left === 0){
-				TankOne.angles_left_to_turn_left = 15;
+				TankOne.angles_left_to_turn_left = 6;
 				TankOne.FacingDirection +=1
 					if(TankOne.FacingDirection === 4){
 						TankOne.FacingDirection = 0
 					};
 			} else if(TankTwo.TurningRight === 1 && TankTwo.angles_left_to_turn_right === 0){
-				TankTwo.angles_left_to_turn_right = 15;
+				TankTwo.angles_left_to_turn_right = 6;
 				TankTwo.FacingDirection -=1
 				if(TankTwo.FacingDirection === -1){
 					TankTwo.FacingDirection = 3
 				};
 				
 			} else if(TankTwo.TurningLeft === 1 && TankTwo.angles_left_to_turn_left === 0){
-				TankTwo.angles_left_to_turn_left = 15;
+				TankTwo.angles_left_to_turn_left = 6;
 				TankTwo.FacingDirection +=1
 				if(TankTwo.FacingDirection === 4){
 					TankTwo.FacingDirection = 0
@@ -193,6 +201,7 @@ window.onload=function(){
 		switch(KeyNumber){
 			//a key
 			case 65:
+				//if statement for the code not to run again when
 				if(TankOne.angles_left_to_turn_right === 0){
 					TankOne.TurningRight = 1;	
 				};
@@ -246,41 +255,45 @@ window.onload=function(){
 			case 82:
 				TankOne = new tank({x:100,y:100,width:100,height:100,ImageLink:"https://i.imgur.com/CThAYu5.png",Direction:0});
 				TankTwo = new tank({x:500,y:500,width:100,height:100,ImageLink:"https://i.imgur.com/BCBxoC1.png",Direction:2});
-				canvas.GameOver = 0
+				canvas.GameOver = false;
 				break;
 		};
 		
 		document.onkeyup = KeyReleased;
 		function KeyReleased(event){
 			switch(event.keyCode){
+				//this is events for player one
+				//a key
 				case 65:
 					TankOne.TurningRight = 0;
-
+				//d key
 				case 68:
 					TankOne.TurningLeft = 0;
 					break;
-
+				//w key
 				case 87:
 					TankOne.ForwardPedalDown = 0;
 					break;
-
+				//s key
 				case 83:
 					TankOne.BackwardsPedalDown = 0;
 					break;
 				}
+				//this is events for player two
 				switch(event.keyCode){
+				//right arrow
 				case 37:
 					TankTwo.TurningRight = 0;
 					break;
-
+				//left arrow
 				case 39:
 					TankTwo.TurningLeft = 0;
 					break;
-
+				//up arrow
 				case 38:
 					TankTwo.ForwardPedalDown = 0;
 					break;
-
+				//down arrow
 				case 40:
 					TankTwo.BackwardsPedalDown = 0;
 					break;	
