@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<!-- charset encoding must be within the first 1024 bytes of the document -->
+<meta charset="utf-8">
+
+<head>
+    <!-- this makes mobile devices behave better. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+<script>
+
+window.onload=function(){
+    document.title='JS-Canvas';
+
+    //herna erum vid ad bua til canvasid og stilla staerdirnar a thvi.
+    var ccanvas=document.createElement('canvas');
+    ccanvas.style.position='absolute';
+    ccanvas.style.top='0px';
+    ccanvas.style.left='0px';
+    //ccanvas.style.width='500px';
+    //ccanvas.style.height='500px';
+    ccanvas.width=500;
+    ccanvas.height=500;
+    ccanvas.style.zIndex='100';
+
+    //herna buum vid til hlutinn a canvasinu sem vid teiknum a.
+    var ccanvasp=ccanvas.getContext("2d");
+    ccanvasp.fillStyle="rgba(0,0,0,1)";
+    ccanvasp.fillRect(0,0,500,500);
+    
+    ChangePixel = function(args){
+        positionX = args.x;
+        positionY = args.y;
+
+        //this.positionX = positionX;
+        //this.positionY = positionY;
+        postitioning = ((500*4)*positionY)+(positionX*4)
+        image_data.data[postitioning] = 0;
+        image_data.data[(postitioning)+1] = 255;
+        image_data.data[(postitioning)+2] = 0;
+
+
+    };
+    ChangeLine = function(args){
+        StartingPoint = args.startingPoint;
+        TargetLine = args.EndingPoint;
+        var rgb=args.rgb;
+        //Rcolor = args.Red
+        //Gcolor = args.Green
+        //Bcolor = args.Blue
+
+        var starting_point = (500*4)*StartingPoint
+        var one_line_slot_quantity = (ccanvas.width*4);
+        var our_target_slot = (one_line_slot_quantity * TargetLine);
+
+
+        for(i = starting_point; our_target_slot > i; i+=4){
+            image_data.data[i] = rgb[0];
+            image_data.data[i+1] = rgb[1];
+            image_data.data[i+2] = rgb[2];
+        }
+    }
+    
+    //herna naum vid i gognin i canvasinu.
+    var image_data=ccanvasp.getImageData(0,0,500,500);
+    ChangePixel({x:50,y:120});
+    
+    ChangeLine({startingPoint:0,EndingPoint:10,rgb:[255,127,0]})
+    
+    ChangeLine({startingPoint:200,EndingPoint:300,rgb:[127,0,127]})
+    /*
+    //her er image_data ordid ad einvidum lista sem taknar alla punktana i canvasinu.
+    //lo
+    //hér er image_data orðið að einvíðum lista sem táknar alla punktana í canvasinu.
+    //við getum hér bara breytt þessum punktum beint, svona:
+    //image_data.data[0]=222;
+    //image_data.data[4]=222;
+    //image_data.data[29]=222;
+
+    //það ber þó að hafa nokkur atriðið í huga.
+    //1. Þetta er einvíður listi, ekki tvívíður. Það virkar þannig að listinn táknar punkta,
+    //byrjandi efst til vinstri, svo færir hann sig til hægri og þegar hann er búinn með efsti línuna,
+    //fer hann lengst til vinstri á línu númer 2. Þetta er soldið eins og að lesa bók.
+    //Ef við viljum breyta, t.d. línu 5, punkt númer 15 frá vinstri þá þurfum við fyrst að reikna
+    //hvar lína 5 byrjar, en það er bara á punkt númer 5 * breiddin á canvasinu.
+    //og svo bætum við bara við fjöldanum sem punktinn er inn á myndinni um.
+
+    //2. Þar sem punktar eru táknaðir með 4 tölum, og hvert stak hefur bara eina tölu til að geyma,
+    //þá eru 4 stök í listanum fyrir hvern punkt. Því þurfum við að margfalda með fjórum til að fá 
+    //rétta staðsetningu.
+    //þessar fjórar tölur eru þá rgb, eða red, green og blue. Því hærra gildi sem viðkomandi tala fær,
+    //því meira verður af viðkomandi lit í punktinum.
+
+
+
+    //Svona breytum við punktinum efst til vinstri í canvasinu, i raudan.
+    image_data.data[0]=222;//red
+    image_data.data[1]=0;//green
+    image_data.data[2]=0;//blue
+
+
+
+    //Svona breytum við punkt x=5 i efstu línu í canvasinu.
+    image_data.data[20]=50;
+    image_data.data[21]=0;
+    image_data.data[22]=100;
+    //taktu eftir því að við byrjum á 20, en það er því við erum að byrja á punkt 5, og hver punktur
+    //hefur fjögur slot og því byrjum við á 5*4, eða 20.
+    //svo hækkum við okkur bara um einn til að komast í næsta slot innan sama punktar.
+
+
+
+    //Nú viljum við breyta punktinum lengst til vinstri á línu 10, þ.e.a.s x=0, y=10.
+    //Við vitum að breidd canvasins er 500 (sjáum það hér ofar).
+    //og því byrjar lína 100 á (500*4)*100, sem er 20000.
+    //þannig að við breytum þeim punkti með:
+    image_data.data[20000]=222;
+    image_data.data[20001]=222;
+    image_data.data[20002]=222;
+
+
+    */
+    //skellum gögnunum aftur í canvasið.
+    ccanvasp.putImageData(image_data,0,0);
+
+    //skellum canvasinu í dom-ið.
+    document.body.appendChild(ccanvas);
+    }
+
+//svona getum við ítrað í gegnum alla punkta í canvasinu.
+//var data_length=image_data.data.length;
+//for(var cline=0;cline<data_length;cline+=20){
+    //image_data.data[cline+1]=222;
+    //}
+</script>

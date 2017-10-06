@@ -5,8 +5,8 @@ window.onload=function(){
 
 	//canvas made and then GameOver variable put on that to indicate the satate of the game
 	canvas.id='thecanvas';
-	canvas.width='800';
-	canvas.height='800';
+	canvas.width='1500';
+	canvas.height='900';
 	canvas.style.border='1px solid red';
 	canvas.GameOver = false;
 	//appends canvas to the html body
@@ -276,9 +276,11 @@ window.onload=function(){
 
 			//r key to restart the game
 			case 82:
+				if(canvas.GameOver){
 				TankOne = new tank({x:100,y:100,width:100,height:100,ImageLink:"https://i.imgur.com/CThAYu5.png",Direction:0});
 				TankTwo = new tank({x:500,y:500,width:100,height:100,ImageLink:"https://i.imgur.com/BCBxoC1.png",Direction:2});
 				canvas.GameOver = false;
+				}
 				break;
 		};
 		
