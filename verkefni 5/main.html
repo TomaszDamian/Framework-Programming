@@ -23,6 +23,7 @@ window.onload=function(){
     ccanvas.width=500;
     ccanvas.height=500;
     ccanvas.style.zIndex='100';
+    var slots_per_line = ccanvas.width*4
 
     //herna buum vid til hlutinn a canvasinu sem vid teiknum a.
     var ccanvasp=ccanvas.getContext("2d");
@@ -42,7 +43,7 @@ window.onload=function(){
 
 
     };
-    ChangeLine = function(args){
+    ChangeLines = function(args){
         StartingPoint = args.startingPoint;
         TargetLine = args.EndingPoint;
         var rgb=args.rgb;
@@ -62,13 +63,44 @@ window.onload=function(){
         }
     }
     
+    ChangeLine = function(args){
+        y = args.y
+        rgb = args.rgb
+        cline = (y*2000)
+        AmountInOneLine = ccanvas.width*4
+        clineStart = cline + AmountInOneLine
+        clineEnd = clineStart + (ccanvas.width*4)
+        console.log(clineEnd,clineStart)
+        for (a = clineStart; a < clineEnd; a+=4){
+            image_data.data[a+0] = rgb[0];
+            image_data.data[a+1] = rgb[1];
+            image_data.data[a+2] = rgb[2];
+        }
+    }
+    ChangeVerticalLine = function(args){
+        x = args.x
+        cslot = x*4
+        //punktur 1
+        //nu thurfum vid ad finna.. slot numerid a fyrsta punktinum.
+        //var cslot=x*4.
+        var begin_slot=(x*4);
+        for(var cslot=begin_slot; cslot < slots_per_line; cslot+=slots_per_line){
+            image_data.data[cslot+0]=222;
+            image_data.data[cslot+1]=222;
+            image_data.data[cslot+2]=222;
+        }
+        //naesta lina, er svo, (cslot+=slots_per_line)     
+    }
     //herna naum vid i gognin i canvasinu.
     var image_data=ccanvasp.getImageData(0,0,500,500);
-    ChangePixel({x:50,y:120});
-    
-    ChangeLine({startingPoint:0,EndingPoint:10,rgb:[255,127,0]})
-    
-    ChangeLine({startingPoint:200,EndingPoint:300,rgb:[127,0,127]})
+   
+    //for(xCounter=50; xCounter<60; xCounter++){
+        ChangeVerticalLine({x:11,rgb:[255,0,0]})
+    //}
+
+    for(i=350;i<400;i++){
+        ChangeLine({y:350,rgb:[127,0,127]})
+    }
     /*
     //her er image_data ordid ad einvidum lista sem taknar alla punktana i canvasinu.
     //lo
