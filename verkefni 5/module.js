@@ -107,36 +107,54 @@ window.onload=function(){
     var cslot = 0;
     Rcolor = 0;
     Gcolor = 100;
-    Bcolor = 255;
+    Bcolor = 200;
+    DecreaseRcolor = true;
+    DecreaseGcolor = true;
+    DecreaseBcolor = true;
     function implement_moment_in_time(){
         cslot+=4;
         //ChangeLines({StartingLine:222,EndingLine:228,rgb:[128,0,15]})
  
-        for(var cslot=0;cslot<slots_per_vertical_line;cslot+=4){
+        //for(var cslot=0;cslot<slots_per_vertical_line;cslot+=4){
             image_data.data[cslot+0]=Rcolor;
             image_data.data[cslot+1]=Gcolor;
             image_data.data[cslot+2]=Bcolor;
+        //}
+        if(Rcolor === 255){
+            DecreaseRcolor = false;
+        }else if(Rcolor === 0){
+            DecreaseRcolor = true;
         }
         
-        if(Rcolor < 255){
-            Rcolor ++;
-        }else if(Rcolor > 0){
-            Rcolor --;
+        if(Gcolor === 255){
+            DecreaseGcolor = false;
+        }else if(Gcolor === 0){
+            DecreaseGcolor = true;
         }
-        
-        if(Bcolor < 255){
-            Bcolor ++;
-        }else if(Bcolor > 0){
-            Bcolor --;
+
+        if(Bcolor === 255){
+            DecreaseBcolor = false;
+        }else if(Bcolor === 0){
+            DecreaseBcolor = true;
         }
-        
-        if(Gcolor < 255){
-            Gcolor ++;
-        }else if(Gcolor > 0){
-            Gcolor --;
+
+        if(DecreaseRcolor){
+            Rcolor++;
+        }else{
+            Rcolor--;
         }
-        console.log("R",Rcolor,"G",Gcolor,"B",Bcolor)
-        
+
+        if(DecreaseGcolor){
+            Gcolor++;
+        }else{
+            Gcolor--;
+        }
+
+        if(DecreaseBcolor){
+            Bcolor++;
+        }else{
+            Bcolor--;
+        }
         
         //some code here.
         //skellir gögnunum aftur á canvasið:
