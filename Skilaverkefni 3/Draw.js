@@ -1,12 +1,9 @@
 var canvas=document.createElement('canvas');
-/*var para = document.createElement("p");
-var node = document.createTextNode("it is not reccomended that your pen size goes over 5 points");
-para.appendChild(node)*/
 ctx = canvas.getContext("2d");
 
 canvas.id='thecanvas';
-canvas.width='1000';
-canvas.height='800';
+canvas.width='800';
+canvas.height='600';
 canvas.style.border='1px solid red';
 canvas.addEventListener("mousedown",MouseDown);
 canvas.addEventListener("mousemove",GetMousePosition);
@@ -16,7 +13,6 @@ document.getElementById('RedColorNumber').value = 0;
 document.getElementById('GreenColorNumber').value = 0;
 document.getElementById('BlueColorNumber').value = 0;
 document.getElementById('BrushSize').value = 1;
-//document.getElementById('canvasDiv').appendChild(para)
 
 
 var IsMouseDown = false;
@@ -65,6 +61,7 @@ function TakeRedColor(){
 		Rcolor = 0;
 	};
 };
+
 function TakeGreenColor(){
 	Gcolor = document.getElementById('GreenColorNumber').value;
 	if(Gcolor > 255){
@@ -76,6 +73,7 @@ function TakeGreenColor(){
 		Gcolor = 0;
 	};
 };
+
 function TakeBlueColor(){
 	Bcolor = document.getElementById('BlueColorNumber').value;
 	if(Bcolor > 255){
@@ -87,6 +85,7 @@ function TakeBlueColor(){
 		Bcolor = 0;
 	};
 };
+
 function GetBrushSize(){
 	BrushSize = document.getElementById('BrushSize').value;
 	if (BrushSize > 6){
@@ -97,12 +96,28 @@ function GetBrushSize(){
 		document.getElementBy('BrushSize').value = 1;
 		BrushSize = 1;
 	};
+};
+
+function RestartColors(){
+	document.getElementById('RedColorNumber').value = 0;
+	document.getElementById('GreenColorNumber').value = 0;
+	document.getElementById('BlueColorNumber').value = 0;
+	Rcolor = 0;
+	Gcolor = 0;
+	Bcolor = 0;
 }
 function ClearCanvas(){
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
+
+function ColorDivChange(Rcolor,Gcolor,Bcolor){
+	document.getElementById('Ccolor').style.backgroundColor = "rgb(" + Rcolor + "," + Gcolor + "," + Bcolor + ")";
+};
+
 function implement_moment_in_time(){
 	if(IsMouseDown){DrawWithCurosr(PrevMouseXpos,PrevMouseYpos,MouseXpos,MouseYpos,Rcolor,Gcolor,Bcolor,BrushSize)}
 	requestAnimationFrame(implement_moment_in_time);
+	ColorDivChange(Rcolor,Gcolor,Bcolor)
 };
+
 implement_moment_in_time();

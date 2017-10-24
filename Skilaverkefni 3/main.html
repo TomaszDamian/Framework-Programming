@@ -23,10 +23,17 @@
 		<div class="column is-1">
 			<label class="title is-5">Brush size</label>
 			<input class="input" max="6" min="1" id="BrushSize" onkeyup="GetBrushSize()" onclick="GetBrushSize()">
-			<p class="subtitle">for special purposes we only allow the brush being from 1 to 6 points</p>
+			<p class="subtitle">avalible sizes: 1-6</p>
+		</div>
+		<div class="column is-1">
+			<label class="title is-5">Current color</label>
+			<div id="Ccolor" style="padding: 10px;"></div>
+		</div>
+		<div class="column is-1">
+			<a class="button is-primary is-large is-danger" onclick="ClearCanvas()">Clear</a>
 		</div>
 		<div class="column">
-			<a class="button is-primary is-large is-danger" onclick="ClearCanvas()">Clear</a>
+			<a class="button is-large is-warning" onclick="RestartColors()">Restart Colors</a>
 		</div>
 	</div>
 	<script src="Draw.js"></script>
