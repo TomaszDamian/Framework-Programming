@@ -112,14 +112,14 @@ window.onload=function(){
     DecreaseGcolor = true;
     DecreaseBcolor = true;
     function implement_moment_in_time(){
-        cslot+=4;
+        //cslot+=4;
         //ChangeLines({StartingLine:222,EndingLine:228,rgb:[128,0,15]})
  
-        //for(var cslot=0;cslot<slots_per_vertical_line;cslot+=4){
+        for(var cslot=0;cslot<slots_per_vertical_line;cslot+=4){
             image_data.data[cslot+0]=Rcolor;
             image_data.data[cslot+1]=Gcolor;
             image_data.data[cslot+2]=Bcolor;
-        //}
+        }
         if(Rcolor === 255){
             DecreaseRcolor = false;
         }else if(Rcolor === 0){

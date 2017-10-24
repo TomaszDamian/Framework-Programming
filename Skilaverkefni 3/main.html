@@ -10,19 +10,23 @@
 	<div class="columns">
 		<div class="column is-1">
 			<label class="title is-5">Red</label>
-			<input class="input" type="number" placeholder="Red" id="RedColorNumber" onkeypress="TakeRedColor()">
+			<input class="input" max="255" min="0" type="number" placeholder="Red" id="RedColorNumber" onkeyup="TakeRedColor()" onclick="TakeRedColor()">
 		</div>
 		<div class="column is-1">
 			<label class="title is-5">Green</label>
-			<input class="input" type="number" placeholder="Green" id="GreenColorNumber" onkeypress="TakeGreenColor()">
+			<input class="input" max="255" min="0" type="number" placeholder="Green" id="GreenColorNumber" onkeyup="TakeGreenColor()" onclick="TakeGreenColor()">
 		</div>
 		<div class="column is-1">
 			<label class="title is-5">Blue</label>
-			<input class="input" type="number" placeholder="Blue" id="BlueColorNumber" onkeypress="TakeBlueColor()">
+			<input class="input" max="255" min="0" type="number" placeholder="Blue" id="BlueColorNumber" onkeyup="TakeBlueColor()" onclick="TakeBlueColor()">
+		</div>
+		<div class="column is-1">
+			<label class="title is-5">Brush size</label>
+			<input class="input" max="6" min="1" id="BrushSize" onkeyup="GetBrushSize()" onclick="GetBrushSize()">
+			<p class="subtitle">for special purposes we only allow the brush being from 1 to 6 points</p>
 		</div>
 		<div class="column">
-			<a class="button is-primary is-large">RGB infusion</a>
-			<a class="button is-primary is-large">Clear</a>
+			<a class="button is-primary is-large is-danger" onclick="ClearCanvas()">Clear</a>
 		</div>
 	</div>
 	<script src="Draw.js"></script>
