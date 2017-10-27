@@ -12,7 +12,7 @@ document.getElementById('canvasDiv').appendChild(canvas);
 document.getElementById('RedColorNumber').value = 0;
 document.getElementById('GreenColorNumber').value = 0;
 document.getElementById('BlueColorNumber').value = 0;
-document.getElementById('BrushSize').value = 1;
+document.getElementById('BrushSize').value = 4;
 
 
 var IsMouseDown = false;
@@ -23,9 +23,12 @@ var MouseYpos = 0;
 var Rcolor = 0;
 var Gcolor = 0;
 var Bcolor = 0;
-var BrushSize = 1;
+var BrushSize = 4;
 var DrawingWith = true;
 var ActiveRainbow = false;
+var Rdecrease = false;
+var Gdecrease = false;
+var Bdecrease = false;
 var image_data = [];
 var paintedPixels = [];
 
@@ -159,12 +162,42 @@ function MakeRainbow(){
 }
 
 function AnimateRainbow(){
-	Rcolor ++;
-	Gcolor ++;
-	Bcolor ++;
 	document.getElementById('RedColorNumber').value = Rcolor;
 	document.getElementById('GreenColorNumber').value = Gcolor;
 	document.getElementById('BlueColorNumber').value = Bcolor;
+	console.log(Rcolor,Gcolor,Bcolor)
+	if(Rcolor > 255){
+		Rdecrease = true;
+	}if(Rcolor < 0){
+		Rdecrease = false;
+	};
+	if(Gcolor > 255){
+		Gdecrease = true;
+	}if(Gcolor < 0){
+		Gdecrease = false;
+	};
+	if(Bcolor > 255){
+		Bdecrease = true;
+	}if(Bcolor < 0){
+		Bdecrease = false;
+	};
+	if(Rdecrease){
+		Rcolor--;
+		console.log("hello")
+	}else{
+		Rcolor++;
+		console.log("goodbye")
+	};
+	if(Gdecrease){
+		Gcolor--;
+	}else{
+		Gcolor++;
+	};
+	if(Bdecrease){
+		Bcolor--;
+	}else{
+		Bcolor++;
+	};
 }
 
 function DrawWithCircle(){
@@ -195,8 +228,12 @@ function ColorDivChange(Rcolor,Gcolor,Bcolor){
 
 function implement_moment_in_time(){
 	if(IsMouseDown){
+		if(ActiveRainbow){
+		AnimateRainbow();
+		};
 		DrawWithCurosr(PrevMouseXpos,PrevMouseYpos,MouseXpos,MouseYpos,Rcolor,Gcolor,Bcolor,BrushSize)
 	}
+	
 	requestAnimationFrame(implement_moment_in_time);
 	ColorDivChange(Rcolor,Gcolor,Bcolor)
 
