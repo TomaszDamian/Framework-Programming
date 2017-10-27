@@ -11,22 +11,22 @@
 		<div class="column is-1">
 			<label class="title is-5">Red</label>
 			<input class="input" max="255" min="0" type="number" placeholder="Red" id="RedColorNumber" onkeyup="TakeRedColor()" onclick="TakeRedColor()">
-			<p class="subtitle">from 1 till 255</p>
+			<p class="subtitle">from 0 till 255</p>
 		</div>
 		<div class="column is-1">
 			<label class="title is-5">Green</label>
 			<input class="input" max="255" min="0" type="number" placeholder="Green" id="GreenColorNumber" onkeyup="TakeGreenColor()" onclick="TakeGreenColor()">
-			<p class="subtitle">from 1 till 255</p>
+			<p class="subtitle">from 0 till 255</p>
 		</div>
 		<div class="column is-1">
 			<label class="title is-5">Blue</label>
 			<input class="input" max="255" min="0" type="number" placeholder="Blue" id="BlueColorNumber" onkeyup="TakeBlueColor()" onclick="TakeBlueColor()">
-			<p class="subtitle">from 1 till 255</p>
+			<p class="subtitle" >from 0 till 255</p>
 		</div>
 		<div class="column is-1">
 			<label class="title is-5">Brush size</label>
-			<input class="input" max="6" min="1" id="BrushSize" onkeyup="GetBrushSize()" onclick="GetBrushSize()">
-			<p class="subtitle">avalible sizes: 1-6</p>
+			<input class="input" id="BrushSize" onkeyup="GetBrushSize()" onclick="GetBrushSize()">
+			<p class="subtitle" id="avalible">avalible sizes: all</p>
 		</div>
 		<div class="column is-1">
 			<label class="title is-5">Current color</label>
@@ -35,6 +35,12 @@
 	</div>
 	<a class="button is-primary is-large is-danger" onclick="ClearCanvas()">Clear</a>
 	<a class="button is-large is-warning" onclick="RestartColors()">Restart Colors</a>
+	<a class="button is-large is-success" id="Rainbow" onclick="MakeRainbow()">Make Rainbow :D</a>
+	<br>
+	<br>
+	<button class="button is-info is-large" id="CirlceButton" onclick="DrawWithCircle()">Draw with circle</button>
+	<button class="button is-danger is-large" id="SquareButton" onclick="DrawWithSquare()">Draw with square</button>
+	<p>blue is active</p>
 	<script src="Draw.js"></script>
 </body>
 </html>

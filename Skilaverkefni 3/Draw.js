@@ -9,9 +9,9 @@ canvas.addEventListener("mousedown",MouseDown);
 canvas.addEventListener("mousemove",GetMousePosition);
 canvas.addEventListener("mouseup",MouseUp);
 document.getElementById('canvasDiv').appendChild(canvas);
-document.getElementById('RedColorNumber').value = 1;
-document.getElementById('GreenColorNumber').value = 1;
-document.getElementById('BlueColorNumber').value = 1;
+document.getElementById('RedColorNumber').value = 0;
+document.getElementById('GreenColorNumber').value = 0;
+document.getElementById('BlueColorNumber').value = 0;
 document.getElementById('BrushSize').value = 1;
 
 
@@ -20,10 +20,12 @@ var PrevMouseXpos = 0;
 var PrevMouseYpos = 0;
 var MouseXpos = 0;
 var MouseYpos = 0;
-var Rcolor = 1;
-var Gcolor = 1;
-var Bcolor = 1;
+var Rcolor = 0;
+var Gcolor = 0;
+var Bcolor = 0;
 var BrushSize = 1;
+var DrawingWith = true;
+var ActiveRainbow = false;
 var image_data = [];
 var paintedPixels = [];
 
@@ -43,13 +45,34 @@ function GetMousePosition(event){
 };
 
 function DrawWithCurosr(prevX,prevY,posX,posY,Rcolor,Gcolor,Bcolor,BrushSize) {
-	ctx.beginPath();
-	ctx.moveTo(prevX, prevY);
-	ctx.lineTo(posX, posY);
-	ctx.strokeStyle = "rgba(" + Rcolor + "," + Gcolor + "," + Bcolor + ",254)";
-	ctx.lineWidth = BrushSize;
-	ctx.stroke();
-	ctx.closePath();
+	if(document.getElementById('RedColorNumber').value.length===0){
+		document.getElementById('RedColorNumber').value = 0;
+		Rcolor = 0
+
+	}
+	if(document.getElementById('GreenColorNumber').value.length===0){
+		document.getElementById('GreenColorNumber').value = 0;
+		Gcolor = 0
+	}
+	if(document.getElementById('BlueColorNumber').value.length===0){
+		document.getElementById('BlueColorNumber').value = 0;
+		Bcolor = 0
+	}
+	if(DrawingWith){
+		ctx.beginPath();
+		ctx.arc(posX, posY, BrushSize, 0, 2 * Math.PI);
+		ctx.fillStyle = "rgba(" + Rcolor + "," + Gcolor + "," + Bcolor + ",254)";
+		ctx.fill();
+	}
+	else{
+		ctx.beginPath();
+		ctx.moveTo(prevX,prevY)
+		ctx.lineTo(posX,posY)
+		ctx.strokeStyle = "rgba(" + Rcolor + "," + Gcolor + "," + Bcolor + ",254)";
+		ctx.lineWidth = BrushSize
+		ctx.stroke();
+		ctx.closePath();
+	};
 };
 
 /* dont mind this just future referece
@@ -64,19 +87,6 @@ faerd til baka
 
 lista af slot numerum.
 */
-function getImageData(){
-	image_data=ctx.getImageData(0,0,canvas.width,canvas.height);
-}
-
-function CheckIfPixelIspainted(){
-	for (var counter = 4; counter <= image_data.data.length; counter + 4){
-		if(image_data.data[counter]===254){
-			paintedPixels.append(image_data.data[counter])
-		}
-	}
-	console.log(paintedPixels)
-}
-
 
 function TakeRedColor(){
 	Rcolor = document.getElementById('RedColorNumber').value;
@@ -84,9 +94,9 @@ function TakeRedColor(){
 		document.getElementById('RedColorNumber').value = 255;
 		Rcolor = 255;
 	};
-	if(Rcolor < 1){
+	if(Rcolor < 0){
 		document.getElementById('RedColorNumber').value = 1;
-		Rcolor = 1;
+		Rcolor = 0;
 	};
 };
 
@@ -96,9 +106,9 @@ function TakeGreenColor(){
 		document.getElementById('GreenColorNumber').value = 255;
 		Gcolor = 255;
 	};
-	if(Gcolor < 1){
+	if(Gcolor < 0){
 		document.getElementById('GreenColorNumber').value = 1;
-		Gcolor = 1;
+		Gcolor = 0;
 	};
 };
 
@@ -108,31 +118,71 @@ function TakeBlueColor(){
 		document.getElementById('BlueColorNumber').value = 255;
 		Bcolor = 255;
 	};
-	if(Bcolor < 1){
+	if(Bcolor < 0){
 		document.getElementById('BlueColorNumber').value = 1;
-		Bcolor = 1;
+		Bcolor = 0;
 	};
 };
 
 function GetBrushSize(){
 	BrushSize = document.getElementById('BrushSize').value;
-	if (BrushSize > 6){
-		document.getElementById('BrushSize').value = 6;
-		BrushSize = 6;
-	};
-	if(BrushSize < 1){
-		document.getElementById('BrushSize').value = 1;
-		BrushSize = 1;
-	};
+	if(DrawingWith === false){
+		if (BrushSize > 6){
+			document.getElementById('BrushSize').value = 6;
+			BrushSize = 6;
+		};
+		if(BrushSize < 0){
+			document.getElementById('BrushSize').value = 1;
+			BrushSize = 0;
+		};
+	}
 };
 
 function RestartColors(){
-	document.getElementById('RedColorNumber').value = 1;
-	document.getElementById('GreenColorNumber').value = 1;
-	document.getElementById('BlueColorNumber').value = 1;
-	Rcolor = 1;
-	Gcolor = 1;
-	Bcolor = 1;
+	document.getElementById('RedColorNumber').value = 0;
+	document.getElementById('GreenColorNumber').value = 0;
+	document.getElementById('BlueColorNumber').value = 0;
+	Rcolor = 0;
+	Gcolor = 0;
+	Bcolor = 0;
+};
+
+function MakeRainbow(){
+	if(ActiveRainbow === false){
+		ActiveRainbow = true;
+		document.getElementById('Rainbow').innerHTML = "stop rainbow :("
+	}
+	else{
+		ActiveRainbow = false;
+		document.getElementById('Rainbow').innerHTML = "Make Rainbow :D"
+	}
+}
+
+function AnimateRainbow(){
+	Rcolor ++;
+	Gcolor ++;
+	Bcolor ++;
+	document.getElementById('RedColorNumber').value = Rcolor;
+	document.getElementById('GreenColorNumber').value = Gcolor;
+	document.getElementById('BlueColorNumber').value = Bcolor;
+}
+
+function DrawWithCircle(){
+	DrawingWith = true;
+	document.getElementById('CirlceButton').className = "button is-info is-large"
+	document.getElementById('SquareButton').className = "button is-danger is-large"
+	document.getElementById('avalible').innerHTML = "avalible sizes: all"
+};
+
+function DrawWithSquare() {
+	DrawingWith = false;
+	document.getElementById('SquareButton').className = "button is-info is-large"
+	document.getElementById('CirlceButton').className = "button is-danger is-large"
+	document.getElementById('avalible').innerHTML = "avalible sizes: 1-6"
+	if(document.getElementById('BrushSize').value > 6){
+		document.getElementById('BrushSize').value = 6
+		BrushSize = 6
+	}
 };
 
 function ClearCanvas(){
@@ -146,11 +196,9 @@ function ColorDivChange(Rcolor,Gcolor,Bcolor){
 function implement_moment_in_time(){
 	if(IsMouseDown){
 		DrawWithCurosr(PrevMouseXpos,PrevMouseYpos,MouseXpos,MouseYpos,Rcolor,Gcolor,Bcolor,BrushSize)
-		getImageData()
 	}
 	requestAnimationFrame(implement_moment_in_time);
 	ColorDivChange(Rcolor,Gcolor,Bcolor)
 
 };
-
 implement_moment_in_time();
