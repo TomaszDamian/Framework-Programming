@@ -1,13 +1,67 @@
-//you need to run all this code on a wamp server or any other type of server
-/*button.
+var SepiaActive = false;
+var BlackAndWhiteActive = false;
+var RedAndwhiteActive = false;
+var isBlurred = false;
+
 var button=document.createElement('button');
-button.style.position='absolute';
 button.style.top=370;
 button.style.left=60;
-button.id='snap';
-button.innerHTML='Take Snapshot';
-button.addEventListener('click',function(e) {paste_video_on_canvas();});*/
-var counter = 0
+button.style.padding="10px";
+button.style.border="none";
+button.style.background="red";
+button.style.margin="0px 5px 0px 0px";
+button.style.cursor="pointer";
+button.id='Sepia';
+button.innerHTML='Sepia filter';
+button.addEventListener('click',function(){
+	SepiaActive = !SepiaActive;
+	BlackAndWhiteActive = false;
+	RedAndwhiteActive = false;
+});
+
+var button2 = document.createElement('button');
+button2.style.top=370;
+button2.style.left=60;
+button2.style.padding="10px";
+button2.style.background="red";
+button2.style.margin="0px 5px 0px 0px";
+button2.style.border="none";
+button2.id='BlackAndWhite';
+button2.style.cursor="pointer";
+button2.innerHTML='Black and white';
+button2.addEventListener('click',function(){
+	SepiaActive = false;
+	BlackAndWhiteActive = !BlackAndWhiteActive;
+	RedAndwhiteActive = false;
+});
+
+var button3 = document.createElement('button');
+button3.style.top=370;
+button3.style.left=60;
+button3.style.padding="10px";
+button3.style.background="red";
+button3.style.margin="0px 5px 0px 0px";
+button3.style.border="none";
+button3.style.cursor="pointer";
+button3.id='MakeRed';
+button3.innerHTML='Make red';
+button3.addEventListener('click',function(){
+	SepiaActive = false;
+	BlackAndWhiteActive = false;
+	RedAndwhiteActive = !RedAndwhiteActive;
+});
+var button4 = document.createElement('button');
+button4.style.top=370;
+button4.style.left=60;
+button4.style.padding="10px";
+button4.style.background="red";
+button4.style.border="none";
+button4.style.cursor="pointer";
+button4.style.margin="0px 5px 0px 0px"
+button4.id='BlurVideo';
+button4.innerHTML='Blur video';
+button4.addEventListener('click',function(){isBlurred = !isBlurred});
+
 //make the video.
 var video=document.createElement('video');
 video.style.position='absolute';
@@ -48,7 +102,10 @@ setInterval(function()  {paste_video_on_canvas();}, 10);
 
 window.onload=function(){
     document.body.style.background='rgb(0,0,0)';
-    //document.body.appendChild(button);
+    document.body.appendChild(button);
+    document.body.appendChild(button2);
+    document.body.appendChild(button3);
+    document.body.appendChild(button4);
     document.body.appendChild(video);
     document.body.appendChild(canvas);
     /*document.body.appendChild(image);*/
@@ -66,6 +123,7 @@ function paste_video_on_canvas(){
     var second_in_video=video.currentTime;
     //einnig er haegt ad lata videoid faerast med thvi ad gera:
     //video.currentTime=33;
+
 
 
     //set the size of the rectangle that will be filled and draw the image onto the canvas.
@@ -91,40 +149,44 @@ function paste_video_on_canvas(){
         //insert the other color you want the image to be
         
         //Make movie red
-        /*
-        var red_filtered_pixel = 255 * lignt_percantage
-        var green_filtered_pixel = 0 * lignt_percantage
-        var blue_filtered_pixel = 0 * lignt_percantage
-        */
+        if(RedAndwhiteActive){
+	        var red_filtered_pixel = 255 * lignt_percantage
+	        var green_filtered_pixel = 0 * lignt_percantage
+	        var blue_filtered_pixel = 0 * lignt_percantage
+        }
 
         //sepia filter
-        /*
-        var red_filtered_pixel = 180 * lignt_percantage
-        var green_filtered_pixel = 80 * lignt_percantage
-        var blue_filtered_pixel = 20 * lignt_percantage
-        */
+        if(SepiaActive){
+       		var red_filtered_pixel = 180 * lignt_percantage
+        	var green_filtered_pixel = 80 * lignt_percantage
+        	var blue_filtered_pixel = 20 * lignt_percantage
+        }
 
         //Black and white
-        /*
-        var red_filtered_pixel = 255 * lignt_percantage
-        var green_filtered_pixel = 255 * lignt_percantage
-        var blue_filtered_pixel = 255 * lignt_percantage
-        */
-        
-        //make Movie blurry at 30 sec till 60 sec
-        if (second_in_video > 30 && second_in_video < 60){
-            canvasp.filter = 'blur(3px)'
-        }
-        else{
-            canvasp.filter = 'blur(0px)'
+        if(BlackAndWhiteActive){
+        	var red_filtered_pixel = 255 * lignt_percantage
+        	var green_filtered_pixel = 255 * lignt_percantage
+        	var blue_filtered_pixel = 255 * lignt_percantage
         }
 
+        if(isBlurred){
+        	canvasp.filter = 'blur(3px)'
+    	}
+    	else{
+        	canvasp.filter = 'blur(0px)'
+    	}
 
         
-
-        pixel_object[cline+0]= red_filtered_pixel;
-        pixel_object[cline+1]= green_filtered_pixel;
-        pixel_object[cline+2]= blue_filtered_pixel;
+        if(BlackAndWhiteActive || SepiaActive || RedAndwhiteActive){
+        	pixel_object[cline+0]= red_filtered_pixel;
+        	pixel_object[cline+1]= green_filtered_pixel;
+        	pixel_object[cline+2]= blue_filtered_pixel;
+    	}
+    	else{
+    		pixel_object[cline+0]= red;
+        	pixel_object[cline+1]= green;
+        	pixel_object[cline+2]= blue;
+    	}
         //165,42,42
 
         //1. reyna ad meta, hversu bjartur thessi punktur er.
@@ -135,16 +197,6 @@ function paste_video_on_canvas(){
         //til (143,43,43).
         //thannig ad vid latum bara punktinn, fa..
         //hlutfallid af
-
-
-        /*
-        if(blue>226 && total > 200){
-            pixel_object[cline+3]=0;
-        }
-        pixel_object[cline+0]=((pixel_object[cline-40]+pixel_object[cline+40])/2);
-        pixel_object[cline+1]=((pixel_object[cline-39]+pixel_object[cline+41])/2);
-        pixel_object[cline+2]=((pixel_object[cline-38]+pixel_object[cline+42])/2);
-        */
         }
     image_data.data=pixel_object;
 
