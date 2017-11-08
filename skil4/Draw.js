@@ -12,7 +12,7 @@ button.style.border="none";
 button.style.background="red";
 button.style.margin="0px 5px 0px 0px";
 button.style.cursor="pointer";
-button.innerHTML='Sepia filter';\
+button.innerHTML='Sepia filter';
 //I am so sure you can do this in some other way that is way more efficient
 //but I just have no idea how I could do it other than this
 button.addEventListener('click',function(){
