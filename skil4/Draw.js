@@ -1,3 +1,4 @@
+//variables that make toggling possible
 var SepiaActive = false;
 var BlackAndWhiteActive = false;
 var RedAndwhiteActive = false;
@@ -11,8 +12,9 @@ button.style.border="none";
 button.style.background="red";
 button.style.margin="0px 5px 0px 0px";
 button.style.cursor="pointer";
-button.id='Sepia';
-button.innerHTML='Sepia filter';
+button.innerHTML='Sepia filter';\
+//I am so sure you can do this in some other way that is way more efficient
+//but I just have no idea how I could do it other than this
 button.addEventListener('click',function(){
 	SepiaActive = !SepiaActive;
 	BlackAndWhiteActive = false;
@@ -26,7 +28,6 @@ button2.style.padding="10px";
 button2.style.background="red";
 button2.style.margin="0px 5px 0px 0px";
 button2.style.border="none";
-button2.id='BlackAndWhite';
 button2.style.cursor="pointer";
 button2.innerHTML='Black and white';
 button2.addEventListener('click',function(){
@@ -43,7 +44,6 @@ button3.style.background="red";
 button3.style.margin="0px 5px 0px 0px";
 button3.style.border="none";
 button3.style.cursor="pointer";
-button3.id='MakeRed';
 button3.innerHTML='Make red';
 button3.addEventListener('click',function(){
 	SepiaActive = false;
@@ -58,7 +58,6 @@ button4.style.background="red";
 button4.style.border="none";
 button4.style.cursor="pointer";
 button4.style.margin="0px 5px 0px 0px"
-button4.id='BlurVideo';
 button4.innerHTML='Blur video';
 button4.addEventListener('click',function(){isBlurred = !isBlurred});
 
@@ -135,20 +134,29 @@ function paste_video_on_canvas(){
     var pixel_object=image_data.data;
     var slot_quantity=image_data.data.length;
     for(var cline=0;cline<slot_quantity;cline+=4){
+        //getting rgba values of one pixel from one 2d list
+        //one pixel is 4 different objects in the image_data list
+        //that said first pixel starts on 0 second on 4 third on 8 and so on
+        //that is what the for loop is doing for me and all I do is just get the values manually
+        //by doing +0,+1,+2 and +3
+        //0 being red, 1 being green, 2 being blue and 3 being apacity/opacity 
         var red=pixel_object[cline+0];
         var green=pixel_object[cline+1];
         var blue=pixel_object[cline+2];
         var opacity=pixel_object[cline+3];
+       
+        var total = red+green+blue;
         
         //average brigthness of every pixel
-        var pixel_average_brightness=((red+green+blue)/3);
+        var pixel_average=(total/3);
         
         //change it into percantage
-        var lignt_percantage = (pixel_average_brightness/255);
+        var lignt_percantage = (pixel_average/255);
 
         //insert the other color you want the image to be
         
         //Make movie red
+        //explanation below
         if(RedAndwhiteActive){
 	        var red_filtered_pixel = 255 * lignt_percantage
 	        var green_filtered_pixel = 0 * lignt_percantage
@@ -156,6 +164,7 @@ function paste_video_on_canvas(){
         }
 
         //sepia filter
+        //explanation below
         if(SepiaActive){
        		var red_filtered_pixel = 180 * lignt_percantage
         	var green_filtered_pixel = 80 * lignt_percantage
@@ -163,12 +172,15 @@ function paste_video_on_canvas(){
         }
 
         //Black and white
+        //black is 255,255,255 and white is 0,0,0
+        //you basically input the highest value you want the pixel to be
+        //as the number that I'll call x so it would go x*light_percantage
         if(BlackAndWhiteActive){
         	var red_filtered_pixel = 255 * lignt_percantage
         	var green_filtered_pixel = 255 * lignt_percantage
         	var blue_filtered_pixel = 255 * lignt_percantage
         }
-
+        //toggles between true and false turning it on an off will work with any filter
         if(isBlurred){
         	canvasp.filter = 'blur(3px)'
     	}
@@ -176,7 +188,7 @@ function paste_video_on_canvas(){
         	canvasp.filter = 'blur(0px)'
     	}
 
-        
+        //this is basically done to be able to append the filtered pixels instead of the unfiltered ones
         if(BlackAndWhiteActive || SepiaActive || RedAndwhiteActive){
         	pixel_object[cline+0]= red_filtered_pixel;
         	pixel_object[cline+1]= green_filtered_pixel;
@@ -187,7 +199,29 @@ function paste_video_on_canvas(){
         	pixel_object[cline+1]= green;
         	pixel_object[cline+2]= blue;
     	}
-        //165,42,42
+        //both of the below will not work if any filter is on the canvas so be wary of that
+        //change the first subtitles
+        
+        if(second_in_video > 20 && second_in_video < 23){
+            //if the total of the pixel is over 715 which is as far as I could push it without
+            //coloring the background red, then you make it red.
+            //on the other title it has a fading effect thats becuase the title fades into white
+            //which means that it comes to the total of 715 per pixel gradually, dont worry its a feature.. kinda
+            if(total > 715){
+                pixel_object[cline+0]= 255;
+                pixel_object[cline+1]= 0;
+                pixel_object[cline+2]= 0;
+            }
+        }
+        //change big buck bunny title
+        
+        if(second_in_video > 25 && second_in_video < 29){
+            if(total > 715){
+                pixel_object[cline+0]= 255;
+                pixel_object[cline+1]= 0;
+                pixel_object[cline+2]= 0;
+            }
+        }
 
         //1. reyna ad meta, hversu bjartur thessi punktur er.
         //endum med, t.d. 0.23
