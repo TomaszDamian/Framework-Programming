@@ -3,6 +3,8 @@ var SepiaActive = false;
 var BlackAndWhiteActive = false;
 var RedAndwhiteActive = false;
 var isBlurred = false;
+var GradualBlack = false;
+var Ypercentage = 1;
 
 var button=document.createElement('button');
 button.style.top=370;
@@ -50,6 +52,7 @@ button3.addEventListener('click',function(){
 	BlackAndWhiteActive = false;
 	RedAndwhiteActive = !RedAndwhiteActive;
 });
+
 var button4 = document.createElement('button');
 button4.style.top=370;
 button4.style.left=60;
@@ -60,6 +63,24 @@ button4.style.cursor="pointer";
 button4.style.margin="0px 5px 0px 0px"
 button4.innerHTML='Blur video';
 button4.addEventListener('click',function(){isBlurred = !isBlurred});
+
+var button5 = document.createElement('button');
+button5.style.top=370;
+button5.style.left=60;
+button5.id="GradualStatus"
+button5.style.padding="10px";
+button5.style.background="red";
+button5.style.border="none";
+button5.style.cursor="pointer";
+button5.style.margin="0px 5px 0px 0px"
+button5.innerHTML='Gradual Black and white';
+button5.addEventListener('click',function(){
+	SepiaActive = false;
+	BlackAndWhiteActive = false;
+	RedAndwhiteActive = false;
+	GradualBlack = !GradualBlack;
+});
+
 
 //make the video.
 var video=document.createElement('video');
@@ -74,23 +95,14 @@ video.volume = 0.3;
 video.autoplay = true;
 video.setAttribute("controls","controls");
 
-/*//make the image.
-var image=document.createElement('img');
-image.style.position='absolute';
-image.style.top=400;
-image.style.left=200;
-image.style.width=500;
-image.style.height=280;
-image.style.zIndex=-5;
-image.src='1.jpg';*/
-
 //make the canvas.
 var canvas=document.createElement('canvas');
 canvas.style.position='absolute';
-canvas.style.top=400;
-canvas.style.left=200;
+canvas.style.top=50;
+canvas.style.left=10;
 canvas.style.width=500;
-//canvas.style.backgroundColor='rgb(222,222,222)';
+canvas.style.height=300;
+canvas.addEventListener("mousemove",FindPercentafeOfCanvas)
 var canvasp=canvas.getContext('2d');
 
 // once the video is ready.. set its dimenstions.
@@ -105,19 +117,23 @@ window.onload=function(){
     document.body.appendChild(button2);
     document.body.appendChild(button3);
     document.body.appendChild(button4);
-    document.body.appendChild(video);
+    document.body.appendChild(button5);
     document.body.appendChild(canvas);
-    /*document.body.appendChild(image);*/
     }
 
-//
+function FindPercentafeOfCanvas(event){
+	//canvas is from 50 to 350 which makes 300 the 100%
+	mouseY = event.clientY
+	Ypercentage = (mouseY-50)/300
+}
+
 function set_canvas_dimensions(){
     var ratio=video.videoWidth/video.videoHeight;
     canvas.width=video.videoWidth;
     canvas.height=parseInt(canvas.width/ratio,10);
     }
-function paste_video_on_canvas(){
 
+function paste_video_on_canvas(){
     //her faum vid sekunduna sem vid erum a innan i videoinu.
     var second_in_video=video.currentTime;
     //einnig er haegt ad lata videoid faerast med thvi ad gera:
@@ -134,6 +150,7 @@ function paste_video_on_canvas(){
     var pixel_object=image_data.data;
     var slot_quantity=image_data.data.length;
     for(var cline=0;cline<slot_quantity;cline+=4){
+        
         //getting rgba values of one pixel from one 2d list
         //one pixel is 4 different objects in the image_data list
         //that said first pixel starts on 0 second on 4 third on 8 and so on
@@ -152,8 +169,6 @@ function paste_video_on_canvas(){
         
         //change it into percantage
         var lignt_percantage = (pixel_average/255);
-
-        //insert the other color you want the image to be
         
         //Make movie red
         //explanation below
@@ -161,7 +176,7 @@ function paste_video_on_canvas(){
 	        var red_filtered_pixel = 255 * lignt_percantage
 	        var green_filtered_pixel = 0 * lignt_percantage
 	        var blue_filtered_pixel = 0 * lignt_percantage
-        }
+        };
 
         //sepia filter
         //explanation below
@@ -169,7 +184,7 @@ function paste_video_on_canvas(){
        		var red_filtered_pixel = 180 * lignt_percantage
         	var green_filtered_pixel = 80 * lignt_percantage
         	var blue_filtered_pixel = 20 * lignt_percantage
-        }
+        };
 
         //Black and white
         //black is 255,255,255 and white is 0,0,0
@@ -179,17 +194,38 @@ function paste_video_on_canvas(){
         	var red_filtered_pixel = 255 * lignt_percantage
         	var green_filtered_pixel = 255 * lignt_percantage
         	var blue_filtered_pixel = 255 * lignt_percantage
-        }
+        };
+
+        if(GradualBlack){
+        	//byrjum a ad gera okkur svarthvit.
+        	
+        	var red_filtered_pixel = (255 * lignt_percantage)
+        	var green_filtered_pixel = (255 * lignt_percantage)
+        	var blue_filtered_pixel = (255 * lignt_percantage)
+        	
+        	//svo thurfum vid ad fatta.. hvernig rgb eru, midad vid svarthvitt.
+        	//mismunur a r og svarthvitu birtunni.
+        	var dr = (red-pixel_average);
+        	var dg = (green-pixel_average);
+        	var db = (blue-pixel_average);
+        	//svo getum vid profad ad baeta thessu aftur a.. tha a thetta ad verda i lit.
+			red_filtered_pixel+=(dr*Ypercentage);
+			green_filtered_pixel+=(dg*Ypercentage);
+			blue_filtered_pixel+=(db*Ypercentage);
+
+
+		}
+
         //toggles between true and false turning it on an off will work with any filter
         if(isBlurred){
         	canvasp.filter = 'blur(3px)'
     	}
     	else{
         	canvasp.filter = 'blur(0px)'
-    	}
+    	};
 
         //this is basically done to be able to append the filtered pixels instead of the unfiltered ones
-        if(BlackAndWhiteActive || SepiaActive || RedAndwhiteActive){
+        if(BlackAndWhiteActive || SepiaActive || RedAndwhiteActive || GradualBlack){
         	pixel_object[cline+0]= red_filtered_pixel;
         	pixel_object[cline+1]= green_filtered_pixel;
         	pixel_object[cline+2]= blue_filtered_pixel;
@@ -198,10 +234,10 @@ function paste_video_on_canvas(){
     		pixel_object[cline+0]= red;
         	pixel_object[cline+1]= green;
         	pixel_object[cline+2]= blue;
-    	}
+    	};
+
         //both of the below will not work if any filter is on the canvas so be wary of that
-        //change the first subtitles
-        
+        //change the first subtitles 
         if(second_in_video > 20 && second_in_video < 23){
             //if the total of the pixel is over 715 which is as far as I could push it without
             //coloring the background red, then you make it red.
@@ -213,8 +249,8 @@ function paste_video_on_canvas(){
                 pixel_object[cline+2]= 0;
             }
         }
+
         //change big buck bunny title
-        
         if(second_in_video > 25 && second_in_video < 29){
             if(total > 715){
                 pixel_object[cline+0]= 255;
@@ -222,15 +258,6 @@ function paste_video_on_canvas(){
                 pixel_object[cline+2]= 0;
             }
         }
-
-        //1. reyna ad meta, hversu bjartur thessi punktur er.
-        //endum med, t.d. 0.23
-        //2. nu viljum vid breyta thessu birtustigi,
-        //i birtustig i litrofinu okkar.
-        //thetta nyja litrof okkar, er a bilinu, 0,0,0 (svartur)
-        //til (143,43,43).
-        //thannig ad vid latum bara punktinn, fa..
-        //hlutfallid af
         }
     image_data.data=pixel_object;
 
