@@ -4,6 +4,8 @@ var BlackAndWhiteActive = false;
 var RedAndwhiteActive = false;
 var isBlurred = false;
 var GradualBlackActive = false;
+var RedTitle = false;
+var ChangeSubtitle = false;
 var Ypercentage = 1;
 
 var button=document.createElement('button');
@@ -11,7 +13,7 @@ button.style.top=370;
 button.style.left=60;
 button.style.padding="10px";
 button.style.border="none";
-button.style.background="red";
+button.className="NotActive"
 button.style.margin="0px 5px 0px 0px";
 button.style.cursor="pointer";
 button.innerHTML='Sepia filter';
@@ -22,13 +24,16 @@ button.addEventListener('click',function(){
 	BlackAndWhiteActive = false;
 	RedAndwhiteActive = false;
 	GradualBlackActive = false;
+	RedTitle = false;
+	ChangeSubtitle = false;
+	RecolorButtons();
 });
 
 var button2 = document.createElement('button');
 button2.style.top=370;
 button2.style.left=60;
 button2.style.padding="10px";
-button2.style.background="red";
+button2.className="NotActive"
 button2.style.margin="0px 5px 0px 0px";
 button2.style.border="none";
 button2.style.cursor="pointer";
@@ -38,13 +43,16 @@ button2.addEventListener('click',function(){
 	BlackAndWhiteActive = !BlackAndWhiteActive;
 	RedAndwhiteActive = false;
 	GradualBlackActive = false;
+	RedTitle = false;
+	ChangeSubtitle = false;
+	RecolorButtons();
 });
 
 var button3 = document.createElement('button');
 button3.style.top=370;
 button3.style.left=60;
 button3.style.padding="10px";
-button3.style.background="red";
+button3.className="NotActive"
 button3.style.margin="0px 5px 0px 0px";
 button3.style.border="none";
 button3.style.cursor="pointer";
@@ -54,25 +62,32 @@ button3.addEventListener('click',function(){
 	BlackAndWhiteActive = false;
 	RedAndwhiteActive = !RedAndwhiteActive;
 	GradualBlackActive = false;
+	RedTitle = false;
+	ChangeSubtitle = false;
+	RecolorButtons();
 });
 
 var button4 = document.createElement('button');
 button4.style.top=370;
 button4.style.left=60;
 button4.style.padding="10px";
-button4.style.background="red";
+button4.className="NotActive"
 button4.style.border="none";
 button4.style.cursor="pointer";
 button4.style.margin="0px 5px 0px 0px"
 button4.innerHTML='Blur video';
-button4.addEventListener('click',function(){isBlurred = !isBlurred});
+button4.addEventListener('click',function(){
+	isBlurred = !isBlurred;
+	RedTitle = false;
+	ChangeSubtitle = false;
+	RecolorButtons();
+});
 
 var button5 = document.createElement('button');
 button5.style.top=370;
 button5.style.left=60;
-button5.id="GradualStatus"
 button5.style.padding="10px";
-button5.style.background="red";
+button5.className="NotActive"
 button5.style.border="none";
 button5.style.cursor="pointer";
 button5.style.margin="0px 5px 0px 0px"
@@ -82,8 +97,54 @@ button5.addEventListener('click',function(){
 	BlackAndWhiteActive = false;
 	RedAndwhiteActive = false;
 	GradualBlackActive = !GradualBlackActive;
+	RedTitle = false;
+	ChangeSubtitle = false;
+	RecolorButtons();
 });
 
+var button6 = document.createElement('button');
+button6.style.top=370;
+button6.style.left=60;
+button6.style.padding="10px";
+button6.className="NotActive"
+button6.style.border="none";
+button6.style.cursor="pointer";
+button6.style.margin="0px 5px 0px 0px"
+button6.innerHTML='Skip to red subtitle';
+button6.addEventListener('click',function(){
+	SepiaActive = false;
+	BlackAndWhiteActive = false;
+	RedAndwhiteActive = false;
+	GradualBlackActive = false;
+	RedTitle = false;
+	ChangeSubtitle = !ChangeSubtitle;
+	if(ChangeSubtitle){
+		SkipTo();
+	}
+	RecolorButtons();
+});
+
+var button7 = document.createElement('button');
+button7.style.top=370;
+button7.style.left=60;
+button7.style.padding="10px";
+button7.className="NotActive"
+button7.style.border="none";
+button7.style.cursor="pointer";
+button7.style.margin="0px 5px 0px 0px"
+button7.innerHTML='Skip to red title';
+button7.addEventListener('click',function(){
+	SepiaActive = false;
+	BlackAndWhiteActive = false;
+	RedAndwhiteActive = false;
+	GradualBlackActive = false;
+	RedTitle = !RedTitle;
+	ChangeSubtitle = false;
+	if(RedTitle){
+		SkipTo();
+	}
+	RecolorButtons();
+});
 
 //make the video.
 var video=document.createElement('video');
@@ -121,8 +182,20 @@ window.onload=function(){
     document.body.appendChild(button3);
     document.body.appendChild(button4);
     document.body.appendChild(button5);
+    document.body.appendChild(button6);
+    document.body.appendChild(button7);
     document.body.appendChild(canvas);
     }
+
+function RecolorButtons(){
+	if(SepiaActive){button.className = "Active";} else{button.className = "NotActive";};
+	if(BlackAndWhiteActive){button2.className = "Active";} else{button2.className = "NotActive";};
+	if(RedAndwhiteActive){button3.className = "Active";} else{button3.className = "NotActive";};
+	if(isBlurred){button4.className = "Active";} else{button4.className = "NotActive";};
+	if(GradualBlackActive){button5.className = "Active";} else{button5.className = "NotActive";};
+	if(ChangeSubtitle){button6.className = "Active";} else{button6.className = "NotActive";};
+	if(RedTitle){button7.className = "Active";} else{button7.className = "NotActive";};
+}
 
 function FindPercentafeOfCanvas(event){
 	//canvas is from 50 to 350 which makes 300 the 100%
@@ -220,13 +293,62 @@ function MakeSepia(pixel_object, image_data){
 	};
 	return pixel_object;
 }
+
 function MakeBlurred(canvasp){
 	canvasp.filter = "blur(3px)";
 	return canvasp;
-}
-function Unblur(canvasp){
+} function Unblur(canvasp){
 	canvasp.filter = "blur(0px)";
 	return canvasp;
+}
+
+function SkipTo(){
+	if(ChangeSubtitle){
+		video.currentTime = 20;
+	};
+	if(RedTitle){
+		video.currentTime = 25;
+	};
+};
+
+function MakeRedSubtitle(pixel_object, image_data){
+	var Timestamp=video.currentTime;
+	var slot_quantity = image_data.data.length
+	for(var cline=0;cline<slot_quantity;cline+=4){
+		if(Timestamp > 20 && Timestamp < 23){	
+			var red=pixel_object[cline+0];
+    		var green=pixel_object[cline+1];
+    		var blue=pixel_object[cline+2];
+    		var total = red+green+blue;
+			
+			if(total > 715){
+                pixel_object[cline+0]= 255;
+                pixel_object[cline+1]= 0;
+                pixel_object[cline+2]= 0;
+            };
+		};
+	};
+	return pixel_object;
+}
+
+function MakeTitleRed(pixel_object, image_data){
+	var Timestamp=video.currentTime;
+	var slot_quantity = image_data.data.length
+	for(var cline=0;cline<slot_quantity;cline+=4){
+		if(Timestamp > 25 && Timestamp < 29){	
+			var red=pixel_object[cline+0];
+    		var green=pixel_object[cline+1];
+    		var blue=pixel_object[cline+2];
+    		var total = red+green+blue;
+			
+			if(total > 715){
+                pixel_object[cline+0]= 255;
+                pixel_object[cline+1]= 0;
+                pixel_object[cline+2]= 0;
+            };
+		};
+	};
+	return pixel_object;
 }
 
 function MakeGradualBlack(pixel_object, image_data){
@@ -268,12 +390,6 @@ function MakeGradualBlack(pixel_object, image_data){
 }
 
 function paste_video_on_canvas(){
-    //her faum vid sekunduna sem vid erum a innan i videoinu.
-    var second_in_video=video.currentTime;
-    //einnig er haegt ad lata videoid faerast med thvi ad gera:
-    //video.currentTime=33;
-    //set the size of the rectangle that will be filled and draw the image onto the canvas.
-
     canvasp.fillRect(0,0,canvas.width,canvas.height);
     canvasp.drawImage(video,0,0,canvas.width,canvas.height);   
     var image_data=canvasp.getImageData(0,0,500,500);
@@ -289,30 +405,10 @@ function paste_video_on_canvas(){
 
     if(GradualBlackActive){pixel_object = MakeGradualBlack(pixel_object, image_data)};
 
+    if(ChangeSubtitle){pixel_object = MakeRedSubtitle(pixel_object, image_data)};
+
+    if(RedTitle){pixel_object = MakeTitleRed(pixel_object, image_data)}
+
     image_data.data=pixel_object;
     canvasp.putImageData(image_data,0,0);
-    /*
-        //both of the below will not work if any filter is on the canvas so be wary of that
-        //change the first subtitles 
-        if(second_in_video > 20 && second_in_video < 23){
-            //if the total of the pixel is over 715 which is as far as I could push it without
-            //coloring the background red, then you make it red.
-            //on the other title it has a fading effect thats becuase the title fades into white
-            //which means that it comes to the total of 715 per pixel gradually, dont worry its a feature.. kinda
-            if(total > 715){
-                pixel_object[cline+0]= 255;
-                pixel_object[cline+1]= 0;
-                pixel_object[cline+2]= 0;
-            }
-        }
-
-        //change big buck bunny title
-        if(second_in_video > 25 && second_in_video < 29){
-            if(total > 715){
-                pixel_object[cline+0]= 255;
-                pixel_object[cline+1]= 0;
-                pixel_object[cline+2]= 0;
-            }
-        }
-        }*/
-    }
+}
