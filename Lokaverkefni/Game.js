@@ -19,19 +19,9 @@ window.onload = function(){
 	//then have one master .js file that compiles all of them making it easy to read.
 	//will look into it soon
 	//this is a class for the player defining
-	Player = function(args){
-		var xpos = args.x;
-		var ypos = args.y;
-		var hitPoints = args.hp;
-		var PlayerModelLink = args.PlayerModelLink
-	}
 	
-	Player.prototype.Draw = function(first_argument) {
-		
-	};
-	
-	function canvasClear(){
-		//made to just clear the canvas so the tanks could be redrawn
+	function CanvasClear(){
+		//made to let the player be redrawn
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 	}
 
@@ -42,7 +32,7 @@ window.onload = function(){
 	Player.Draw();
 
 	//this just call the RAF again and it proccesses when it can
-	requestAnimationFrame( implement_moment_in_time);
+	requestAnimationFrame(implement_moment_in_time);
 	};
 	implement_moment_in_time();
 	//calling this player class once in the begging
