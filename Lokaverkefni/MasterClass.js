@@ -1,6 +1,10 @@
 function mbase(){
 	this.Canvas = new CreateCanvas();
 	this.Player = new Player({x:250,y:250,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png"});
+	this.moveup = false;
+	this.movedown = false;
+	this.moveleft = false;
+	this.moveright = false;
 	//this.Enemy = new Enemy({EnemyModleLink:https://i.imgur.com/rsaFhHn.png})
 
 };
@@ -11,10 +15,52 @@ mbase.prototype.onload = function() {
 	//this is for onkeydown
 	//detects if a key was pressed
 	document.onkeydown = function(event){
-		KeyPressed = 
-	}
+		KeyPressed = event.keyCode
+		switch (KeyPressed) {
+			case 87:
+				cthis.moveup = true;
 
+				break;
+			case 83:
+				cthis.movedown = true;
+				break;
+
+			case 65:
+				cthis.moveleft = true;
+				break;
+
+			case 68:
+				cthis.moveright = true;
+				break;
+		};
+	};
+	//same as above but it detects when a button is released
+	document.onkeyup = function(event){
+		KeyPressed = event.keyCode
+		switch (KeyPressed) {
+			case 87:
+				cthis.moveup = false;
+				break;
+			case 83:
+				cthis.movedown = false;
+				break;
+
+			case 65:
+				cthis.moveleft = false;
+				break;
+
+			case 68:
+				cthis.moveright = false;
+				break;
+		};
+	};
+	
 	function implement_moment_in_time(){
+		if(cthis.moveup){cthis.Player.ypos -= 10;};
+		
+		if(cthis.movedown){cthis.Player.ypos += 10;};
+		if (cthis.moveleft){cthis.Player.xpos -= 10};
+		if (cthis.moveright){cthis.Player.xpos += 10};
 		//clearing canvas
 		cthis.Canvas.clearCanvas();
 
