@@ -5,9 +5,10 @@ function CreateCanvas(){
 
 	//making canvas and appending it into the html
 	this.canvas.id='thecanvas';
-	this.canvas.width='900';
-	this.canvas.height='500';
-	this.canvas.style.border='1px solid red';
+	this.canvas.width= "1600";
+	this.CanvasWidth = this.canvas.width;
+	this.canvas.height='650';
+	this.canvas.style.border='1px solid red'; 
 	document.body.appendChild(this.canvas)
 }
 CreateCanvas.prototype.clearCanvas = function() {

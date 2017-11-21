@@ -1,17 +1,17 @@
 function mbase(){
 	this.Canvas = new CreateCanvas();
 	this.Player = new Player({x:250,y:250,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png"});
+	this.Enemy = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png"})
 	this.moveup = false;
 	this.movedown = false;
 	this.moveleft = false;
 	this.moveright = false;
-	//this.Enemy = new Enemy({EnemyModleLink:https://i.imgur.com/rsaFhHn.png})
-
+	this.AmountOfenemiesAlive = 0;
 };
 
 mbase.prototype.onload = function() {
 	var cthis = this;
-	
+
 	//this is for onkeydown
 	//detects if a key was pressed
 	document.onkeydown = function(event){
@@ -54,18 +54,17 @@ mbase.prototype.onload = function() {
 				break;
 		};
 	};
-	
 	function implement_moment_in_time(){
-		if(cthis.moveup){cthis.Player.ypos -= 10;};
-		
-		if(cthis.movedown){cthis.Player.ypos += 10;};
-		if (cthis.moveleft){cthis.Player.xpos -= 10};
-		if (cthis.moveright){cthis.Player.xpos += 10};
+		if(cthis.moveup){cthis.Player.ypos -= 7;};	
+		if(cthis.movedown){cthis.Player.ypos += 7;};
+		if(cthis.moveleft){cthis.Player.xpos -= 7};
+		if(cthis.moveright){cthis.Player.xpos += 7};
 		//clearing canvas
 		cthis.Canvas.clearCanvas();
 
 		//drawing player
 		cthis.Player.Draw({on:cthis.Canvas.painter});
+		cthis.Enemy.Draw({on:cthis.Canvas.painter});
 
 		requestAnimationFrame(implement_moment_in_time);
 	};

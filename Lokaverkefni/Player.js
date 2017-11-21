@@ -2,11 +2,11 @@ function Player(args){
 	this.xpos = args.x;
 	this.ypos = args.y;
 	this.hitPoints = args.hp;
+	this.PlayerModelLink = args.PlayerModelLink;
 	
-	this.PlayerModelLink = args.PlayerModelLink
 	img = new Image();
 	img.src = this.PlayerModelLink;
-	this.PlayerModel = img
+	this.PlayerModel = img;
 }
 
 Player.prototype.Draw = function(args) {
