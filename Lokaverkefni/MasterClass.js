@@ -7,27 +7,36 @@ function mbase(){
 	this.moveright = false;
 	this.AmountCreated = 0;
 	this.amountToCreate = 10;
-
-	this.gumbas={};
+	this.gumbas=[];
 };
 
 mbase.prototype.CreateGoombas = function(){
 	cthis = this
 	if(this.AmountCreated < 10){
 		setTimeout(function() {
-			var GoombaID = "goomba" + cthis.AmountCreated;
 			cthis.AmountCreated++;
-			cthis.gumbas[GoombaID] = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png"})
+			var GoombaID = "goomba" + cthis.AmountCreated;
+			GoombaObject = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png",CanvasWidth:cthis.Canvas.CanvasWidth})
+			cthis.gumbas.push({ID:GoombaID,Goomba:GoombaObject})
+			cthis.CreateGoombas();
 		},800)	
 	}
 };
 mbase.prototype.DrawGoombas = function(){
 	cthis = this;
-	for (var i = gumbas.length - 1; i >= 0; i--) {
-		gumbas[i].Draw({on:cthis.Canvas.painter})
-		console.log("hello")
-	}
+	this.gumbas.forEach(function(ThisGumba){
+		IsDeadorNot = ThisGumba.Goomba.Draw({on:cthis.Canvas.painter});
+		if(IsDeadorNot){
+			cthis.DeleteGoomba(ThisGumba.ID);
+		};
+	});
 }
+
+mbase.prototype.DeleteGoomba = function(GoombaID) {
+	var DeadGoomba = this.gumbas.findIndex(x => x.ID === GoombaID);
+	this.AmountCreated--;
+	this.gumbas.splice(DeadGoomba, 1);
+};
 
 mbase.prototype.onload = function() {
 	var cthis = this;
@@ -94,7 +103,7 @@ mbase.prototype.onload = function() {
 
 		//cthis.gumbas.first_gumba.Draw({on:cthis.Canvas.painter});
 		//cthis.gumbas.second_gumba.Draw({on:cthis.Canvas.painter});
-		cthis.DrawGoombas
+		cthis.DrawGoombas();
 		requestAnimationFrame(implement_moment_in_time);
 	};
 	implement_moment_in_time();
