@@ -1,16 +1,38 @@
 function mbase(){
 	this.Canvas = new CreateCanvas();
 	this.Player = new Player({x:250,y:250,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png"});
-	this.Enemy = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png"})
 	this.moveup = false;
 	this.movedown = false;
 	this.moveleft = false;
 	this.moveright = false;
-	this.AmountOfenemiesAlive = 0;
+	this.AmountCreated = 0;
+	this.amountToCreate = 10;
+
+	this.gumbas={};
 };
+
+mbase.prototype.CreateGoombas = function(){
+	cthis = this
+	if(this.AmountCreated < 10){
+		setTimeout(function() {
+			var GoombaID = "goomba" + cthis.AmountCreated;
+			cthis.AmountCreated++;
+			cthis.gumbas[GoombaID] = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png"})
+		},800)	
+	}
+};
+mbase.prototype.DrawGoombas = function(){
+	cthis = this;
+	for (var i = gumbas.length - 1; i >= 0; i--) {
+		gumbas[i].Draw({on:cthis.Canvas.painter})
+		console.log("hello")
+	}
+}
 
 mbase.prototype.onload = function() {
 	var cthis = this;
+
+	cthis.CreateGoombas()
 
 	//this is for onkeydown
 	//detects if a key was pressed
@@ -54,6 +76,11 @@ mbase.prototype.onload = function() {
 				break;
 		};
 	};
+
+	/*setTimeout(function(){
+		delete cthis.Enemy
+		console.log(cthis.Enemy)
+	},1000)*/
 	function implement_moment_in_time(){
 		if(cthis.moveup){cthis.Player.ypos -= 7;};	
 		if(cthis.movedown){cthis.Player.ypos += 7;};
@@ -64,8 +91,10 @@ mbase.prototype.onload = function() {
 
 		//drawing player
 		cthis.Player.Draw({on:cthis.Canvas.painter});
-		cthis.Enemy.Draw({on:cthis.Canvas.painter});
 
+		//cthis.gumbas.first_gumba.Draw({on:cthis.Canvas.painter});
+		//cthis.gumbas.second_gumba.Draw({on:cthis.Canvas.painter});
+		cthis.DrawGoombas
 		requestAnimationFrame(implement_moment_in_time);
 	};
 	implement_moment_in_time();
