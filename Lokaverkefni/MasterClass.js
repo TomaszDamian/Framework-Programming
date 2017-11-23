@@ -1,32 +1,40 @@
 function mbase(){
 	this.Canvas = new CreateCanvas();
 	this.Player = new Player({x:250,y:250,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png"});
+	this.detectCollision = new CollisionDetection({});
 	this.moveup = false;
 	this.movedown = false;
 	this.moveleft = false;
 	this.moveright = false;
 	this.AmountCreated = 0;
-	this.amountToCreate = 10;
+	this.AmountDead = 0;
+	this.Timer = 0;
+	this.amountToCreate = 1000;
 	this.gumbas=[];
 };
 
 mbase.prototype.CreateGoombas = function(){
 	cthis = this
-	if(this.AmountCreated < 10){
+	if(this.AmountCreated < this.amountToCreate){
 		setTimeout(function() {
 			cthis.AmountCreated++;
 			var GoombaID = "goomba" + cthis.AmountCreated;
 			GoombaObject = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png",CanvasWidth:cthis.Canvas.CanvasWidth})
 			cthis.gumbas.push({ID:GoombaID,Goomba:GoombaObject})
 			cthis.CreateGoombas();
-		},800)	
+		},cthis.Timer)	
+	}
+	else{
+		cthis.CreateGoombas();
 	}
 };
+
 mbase.prototype.DrawGoombas = function(){
 	cthis = this;
 	this.gumbas.forEach(function(ThisGumba){
-		IsDeadorNot = ThisGumba.Goomba.Draw({on:cthis.Canvas.painter});
-		if(IsDeadorNot){
+		ThisGumba.Goomba.Draw({on:cthis.Canvas.painter});
+		var IsDead = ThisGumba.Goomba.death()
+		if(IsDead){
 			cthis.DeleteGoomba(ThisGumba.ID);
 		};
 	});
@@ -34,8 +42,10 @@ mbase.prototype.DrawGoombas = function(){
 
 mbase.prototype.DeleteGoomba = function(GoombaID) {
 	var DeadGoomba = this.gumbas.findIndex(x => x.ID === GoombaID);
-	this.AmountCreated--;
 	this.gumbas.splice(DeadGoomba, 1);
+	this.AmountCreated--;
+	this.AmountDead++;
+	console.log(this.AmountDead)
 };
 
 mbase.prototype.onload = function() {
@@ -100,6 +110,8 @@ mbase.prototype.onload = function() {
 
 		//drawing player
 		cthis.Player.Draw({on:cthis.Canvas.painter});
+
+		cthis.detectCollision.borderCollison();
 
 		//cthis.gumbas.first_gumba.Draw({on:cthis.Canvas.painter});
 		//cthis.gumbas.second_gumba.Draw({on:cthis.Canvas.painter});

@@ -9,13 +9,14 @@ function Enemy(args){
 	this.yposNumber = -50
 }
 
+Enemy.prototype.death = function(){
+	if(this.yposNumber > 650){
+		return true;
+	}
+};
+
 Enemy.prototype.Draw = function(args){
 	var on_canvas = args.on
 	on_canvas.drawImage(this.EnemyModel,this.xposNumber,this.yposNumber,50,50)
-	if(this.yposNumber < 650){
-		this.yposNumber = this.yposNumber+3;
-	}
-	else{
-		return true;
-	}
+	this.yposNumber = this.yposNumber+3;
 }; 
