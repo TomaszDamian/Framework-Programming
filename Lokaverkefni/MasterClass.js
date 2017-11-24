@@ -1,6 +1,6 @@
 function mbase(){
 	this.Canvas = new CreateCanvas();
-	this.Player = new Player({x:250,y:250,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png"});
+	this.Player = new Player({x:250,y:250,heigth:100,width:65,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png"});
 	this.detectCollision = new CollisionDetection({});
 	this.moveup = false;
 	this.movedown = false;
@@ -8,11 +8,11 @@ function mbase(){
 	this.moveright = false;
 	this.AmountCreated = 0;
 	this.AmountDead = 0;
-	this.Timer = 0;
+	this.Timer = 600;
 	this.amountToCreate = 1000;
 	this.gumbas=[];
 };
-
+ 
 mbase.prototype.CreateGoombas = function(){
 	cthis = this
 	if(this.AmountCreated < this.amountToCreate){
@@ -45,7 +45,6 @@ mbase.prototype.DeleteGoomba = function(GoombaID) {
 	this.gumbas.splice(DeadGoomba, 1);
 	this.AmountCreated--;
 	this.AmountDead++;
-	console.log(this.AmountDead)
 };
 
 mbase.prototype.onload = function() {
@@ -108,10 +107,19 @@ mbase.prototype.onload = function() {
 		//clearing canvas
 		cthis.Canvas.clearCanvas();
 
+		cthis.detectCollision.borderCollison({
+			PlayerXpos:cthis.Player.xpos,
+			PlayerYpos:cthis.Player.ypos,
+			PlayerWidth:cthis.Player.width,
+			PlayerHeigth:cthis.Player.heigth,
+			theplayer:cthis.Player,
+			CanvasWidth:cthis.Canvas.CanvasWidth,
+			CanvasHeigth:cthis.Canvas.CanvasHeigth,
+		});
+
+
 		//drawing player
 		cthis.Player.Draw({on:cthis.Canvas.painter});
-
-		cthis.detectCollision.borderCollison();
 
 		//cthis.gumbas.first_gumba.Draw({on:cthis.Canvas.painter});
 		//cthis.gumbas.second_gumba.Draw({on:cthis.Canvas.painter});

@@ -8,6 +8,7 @@ function CreateCanvas(){
 	this.canvas.width= "1600";
 	this.CanvasWidth = this.canvas.width;
 	this.canvas.height='650';
+	this.CanvasHeigth = this.canvas.height;
 	this.canvas.style.border='1px solid red'; 
 	document.body.appendChild(this.canvas)
 }

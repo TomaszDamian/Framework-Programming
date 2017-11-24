@@ -1,6 +1,8 @@
 function Player(args){
 	this.xpos = args.x;
 	this.ypos = args.y;
+	this.width = args.width;
+	this.heigth = args.heigth;
 	this.hitPoints = args.hp;
 	this.PlayerModelLink = args.PlayerModelLink;
 	
@@ -11,5 +13,5 @@ function Player(args){
 
 Player.prototype.Draw = function(args) {
 	var on_canvas = args.on;
-	on_canvas.drawImage(this.PlayerModel,this.xpos,this.ypos,65,100)
+	on_canvas.drawImage(this.PlayerModel,this.xpos,this.ypos,this.width,this.heigth)
 };
