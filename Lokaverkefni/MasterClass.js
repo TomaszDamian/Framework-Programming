@@ -33,6 +33,19 @@ mbase.prototype.CreateGoombas = function(){
 	}
 };
 
+mbase.prototype.DetectHit = function(){
+	var cthis = this;
+	this.gumbas.forEach(function(ThisGumba){
+		var HitDetected = cthis.detectCollision.PlayerCollision({
+			Goomba:ThisGumba.Goomba,
+			Player:cthis.Player,
+		});
+		if(HitDetected){
+			cthis.Player.GetHit();
+		}
+	});
+}
+
 mbase.prototype.DrawGoombas = function(){
 	cthis = this;
 	this.gumbas.forEach(function(ThisGumba){
@@ -123,7 +136,7 @@ mbase.prototype.onload = function() {
 			CanvasHeigth:cthis.Canvas.CanvasHeigth,
 		});
 
-
+		cthis.DetectHit();
 		//drawing player
 		cthis.Player.Draw({on:cthis.Canvas.painter});
 
@@ -131,6 +144,7 @@ mbase.prototype.onload = function() {
 		//cthis.gumbas.second_gumba.Draw({on:cthis.Canvas.painter});
 		cthis.DrawGoombas();
 		requestAnimationFrame(implement_moment_in_time);
+		
 	};
 	implement_moment_in_time();
 };

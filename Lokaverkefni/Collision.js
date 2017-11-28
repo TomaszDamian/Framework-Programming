@@ -1,4 +1,5 @@
-function CollisionDetection(){}
+function CollisionDetection(){
+}
 
 CollisionDetection.prototype.borderCollison = function(args){
 	var theplayer=args.theplayer;
@@ -23,3 +24,19 @@ CollisionDetection.prototype.borderCollison = function(args){
 		theplayer.ypos = CanvasHeigth-PlayerHeigth;
 	}
 };
+
+CollisionDetection.prototype.PlayerCollision = function(args){
+	var Player = args.Player;
+	var Goomba = args.Goomba;
+	cthis = this;
+	if (Player.xpos <= Goomba.xposNumber + Goomba.width &&
+		Player.xpos + Player.width >= Goomba.xposNumber &&
+		Player.ypos <= Goomba.yposNumber + Goomba.heigth &&
+		Player.heigth + Player.ypos >= Goomba.yposNumber){
+		return true;
+	}
+
+	else{
+		return false;
+	}
+}
