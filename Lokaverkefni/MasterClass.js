@@ -1,14 +1,18 @@
 function mbase(){
+	//this makes it possible to call all the functions withing the master class
 	this.Canvas = new CreateCanvas();
-	this.Player = new Player({x:250,y:250,heigth:100,width:65,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png"});
+	this.Player = new Player({x:250,y:250,heigth:100,width:65,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png",Score:0});
 	this.detectCollision = new CollisionDetection({});
+	
 	this.moveup = false;
 	this.movedown = false;
 	this.moveleft = false;
 	this.moveright = false;
+	
 	this.AmountCreated = 0;
 	this.AmountDead = 0;
-	this.Timer = 600;
+	this.Timer = 600; 
+	//softcap the amount of goombas to 1000 so it doesn't overload the whole system
 	this.amountToCreate = 1000;
 	this.gumbas=[];
 };
@@ -36,6 +40,8 @@ mbase.prototype.DrawGoombas = function(){
 		var IsDead = ThisGumba.Goomba.death()
 		if(IsDead){
 			cthis.DeleteGoomba(ThisGumba.ID);
+			cthis.Player.AddScore();
+			IsDead = false;
 		};
 	});
 }
