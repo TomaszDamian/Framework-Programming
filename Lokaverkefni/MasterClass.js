@@ -23,7 +23,7 @@ mbase.prototype.CreateGoombas = function(){
 		setTimeout(function() {
 			cthis.AmountCreated++;
 			var GoombaID = "goomba" + cthis.AmountCreated;
-			GoombaObject = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png",CanvasWidth:cthis.Canvas.CanvasWidth})
+			GoombaObject = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png",CanvasWidth:cthis.Canvas.CanvasWidth,width:50,heigth:50})
 			cthis.gumbas.push({ID:GoombaID,Goomba:GoombaObject})
 			cthis.CreateGoombas();
 		},cthis.Timer)	
@@ -35,9 +35,9 @@ mbase.prototype.CreateGoombas = function(){
 
 mbase.prototype.DetectHit = function(){
 	var cthis = this;
-	this.gumbas.forEach(function(ThisGumba){
+	this.gumbas.forEach(function(CurrentGoomba){
 		var HitDetected = cthis.detectCollision.PlayerCollision({
-			Goomba:ThisGumba.Goomba,
+			Goomba:CurrentGoomba.Goomba,
 			Player:cthis.Player,
 		});
 		if(HitDetected){
@@ -143,6 +143,7 @@ mbase.prototype.onload = function() {
 		//cthis.gumbas.first_gumba.Draw({on:cthis.Canvas.painter});
 		//cthis.gumbas.second_gumba.Draw({on:cthis.Canvas.painter});
 		cthis.DrawGoombas();
+		cthis.DetectHit();
 		requestAnimationFrame(implement_moment_in_time);
 		
 	};

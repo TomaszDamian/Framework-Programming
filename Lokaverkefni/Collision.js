@@ -1,4 +1,5 @@
 function CollisionDetection(){
+	this.Invincible = false;
 }
 
 CollisionDetection.prototype.borderCollison = function(args){
@@ -28,15 +29,21 @@ CollisionDetection.prototype.borderCollison = function(args){
 CollisionDetection.prototype.PlayerCollision = function(args){
 	var Player = args.Player;
 	var Goomba = args.Goomba;
-	cthis = this;
-	if (Player.xpos <= Goomba.xposNumber + Goomba.width &&
+	var cthis = this
+	if(!this.Invincible){
+		if(Player.xpos <= Goomba.xposNumber + Goomba.width &&
 		Player.xpos + Player.width >= Goomba.xposNumber &&
 		Player.ypos <= Goomba.yposNumber + Goomba.heigth &&
 		Player.heigth + Player.ypos >= Goomba.yposNumber){
-		return true;
-	}
+			this.Invincible = true;
 
-	else{
-		return false;
-	}
+			setTimeout(function(){
+				cthis.Invincible = false;
+			},3000)
+
+			return true;
+		}
+		
+		
+	};
 }
