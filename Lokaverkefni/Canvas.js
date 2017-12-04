@@ -9,8 +9,9 @@ function CreateCanvas(){
 	this.CanvasWidth = this.canvas.width;
 	this.canvas.height='650';
 	this.CanvasHeigth = this.canvas.height;
-	this.canvas.style.border='1px solid red'; 
-	document.body.appendChild(this.canvas)
+	this.canvas.style.border='1px solid red';
+	this.canvas.style.marginBottom = "20px";
+	document.getElementById('CanvasDiv').appendChild(this.canvas)
 }
 CreateCanvas.prototype.clearCanvas = function() {
 	//clearing everything to let it be redrawn

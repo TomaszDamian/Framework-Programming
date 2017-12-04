@@ -3,7 +3,8 @@ function mbase(){
 	this.Canvas = new CreateCanvas();
 	this.Player = new Player({x:250,y:250,heigth:100,width:65,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png",Score:0});
 	this.detectCollision = new CollisionDetection({});
-	
+	this.UserScores = new UserSubmissions();
+
 	this.moveup = false;
 	this.movedown = false;
 	this.moveleft = false;
@@ -70,6 +71,7 @@ mbase.prototype.onload = function() {
 	var cthis = this;
 
 	cthis.CreateGoombas()
+	cthis.UserScores.CreateScoreSubmission();
 
 	//this is for onkeydown
 	//detects if a key was pressed
@@ -113,11 +115,6 @@ mbase.prototype.onload = function() {
 				break;
 		};
 	};
-
-	/*setTimeout(function(){
-		delete cthis.Enemy
-		console.log(cthis.Enemy)
-	},1000)*/
 	function implement_moment_in_time(){
 		if(cthis.moveup){cthis.Player.ypos -= 7;};	
 		if(cthis.movedown){cthis.Player.ypos += 7;};
