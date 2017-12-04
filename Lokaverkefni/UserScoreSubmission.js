@@ -12,6 +12,8 @@ UserSubmissions.prototype.CreateScoreSubmission = function(){
 	document.getElementById('UserNameDiv').appendChild(UserNameInput)
 };
 
+//Function written by Filip Ekström/Tromodolo
+//https://github.com/Tromodolo/
 UserSubmissions.prototype.SubmitScore = function(userName, userScore){
 	if(!userName || !userScore)
 		return;

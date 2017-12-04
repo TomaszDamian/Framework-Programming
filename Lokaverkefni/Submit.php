@@ -1,4 +1,7 @@
 <?php
+    //PHP script written by Filip Ekström/Tromodolo
+    //https://github.com/Tromodolo/
+
     //If the IP of the connection doesn't match the Server IP, kill the connection
     if($_SERVER['SERVER_ADDR'] !== $_SERVER['REMOTE_ADDR']){
         die();
