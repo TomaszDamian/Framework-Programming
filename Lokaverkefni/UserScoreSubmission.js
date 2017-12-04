@@ -12,6 +12,14 @@ UserSubmissions.prototype.CreateScoreSubmission = function(){
 	document.getElementById('UserNameDiv').appendChild(UserNameInput)
 };
 
-UserSubmissions.prototype.SubmitScore = function(){
-	
+UserSubmissions.prototype.SubmitScore = function(userName, userScore){
+	if(!userName || !userScore)
+		return;
+		
+	var data = new FormData();
+	data.append("userName" , userName);
+	data.append("userScore", userScore)
+	var xhr = (window.XMLHttpRequest) ? new XMLHttpRequest() : new activeXObject("Microsoft.XMLHTTP");
+	xhr.open( 'post', './Submit.php', true );
+	xhr.send(data);
 };
