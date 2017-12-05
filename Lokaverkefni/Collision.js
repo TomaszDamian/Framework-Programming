@@ -39,7 +39,7 @@ CollisionDetection.prototype.PlayerCollision = function(args){
 
 			setTimeout(function(){
 				cthis.Invincible = false;
-			},3000)
+			},2000)
 
 			return true;
 		}

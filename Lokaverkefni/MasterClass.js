@@ -1,6 +1,6 @@
 function mbase(){
 	//this makes it possible to call all the functions withing the master class
-	this.Canvas = new CreateCanvas();
+	this.Canvas = new CreateCanvas({heigth:650,width:900});
 	this.Player = new Player({x:250,y:250,heigth:100,width:65,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png",Score:0});
 	this.detectCollision = new CollisionDetection({});
 	this.UserScores = new UserSubmissions();
@@ -9,6 +9,8 @@ function mbase(){
 	this.movedown = false;
 	this.moveleft = false;
 	this.moveright = false;
+	this.GamePlaying = false;
+	this.GameOver = false;
 	
 	this.AmountCreated = 0;
 	this.AmountDead = 0;
@@ -18,20 +20,29 @@ function mbase(){
 	this.gumbas=[];
 };
  
+mbase.prototype.DeleteEverything = function(){
+	this.gumbas=[];
+}
+
 mbase.prototype.CreateGoombas = function(){
 	cthis = this
-	if(this.AmountCreated < this.amountToCreate){
-		setTimeout(function() {
-			cthis.AmountCreated++;
-			var GoombaID = "goomba" + cthis.AmountCreated;
-			GoombaObject = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png",CanvasWidth:cthis.Canvas.CanvasWidth,width:50,heigth:50})
-			cthis.gumbas.push({ID:GoombaID,Goomba:GoombaObject})
+	if(!cthis.GameOver === true){
+		if(this.AmountCreated < this.amountToCreate){
+			setTimeout(function() {
+				cthis.AmountCreated++;
+				var GoombaID = "goomba" + cthis.AmountCreated;
+				GoombaObject = new Enemy({EnemyModleLink:"https://i.imgur.com/rsaFhHn.png",CanvasWidth:cthis.Canvas.CanvasWidth,width:50,heigth:50})
+				cthis.gumbas.push({ID:GoombaID,Goomba:GoombaObject})
+				cthis.CreateGoombas();
+			},cthis.Timer)	
+		}
+		else{
 			cthis.CreateGoombas();
-		},cthis.Timer)	
+		};
 	}
 	else{
-		cthis.CreateGoombas();
-	}
+		cthis.DeleteEverything();
+	};
 };
 
 mbase.prototype.DetectHit = function(){
@@ -70,8 +81,8 @@ mbase.prototype.DeleteGoomba = function(GoombaID) {
 mbase.prototype.onload = function() {
 	var cthis = this;
 
-	cthis.CreateGoombas()
 	cthis.UserScores.CreateScoreSubmission();
+	cthis.UserScores.CreateLeaderboard();
 
 	//this is for onkeydown
 	//detects if a key was pressed
@@ -80,19 +91,36 @@ mbase.prototype.onload = function() {
 		switch (KeyPressed) {
 			case 87:
 				cthis.moveup = true;
-
-				break;
+			break;
+			
 			case 83:
 				cthis.movedown = true;
-				break;
+			break;
 
 			case 65:
 				cthis.moveleft = true;
-				break;
+			break;
 
 			case 68:
 				cthis.moveright = true;
-				break;
+			break;
+
+			case 13:
+				if(!cthis.GamePlaying){
+					cthis.GamePlaying = true;
+					cthis.GameOver = false;
+					cthis.CreateGoombas();
+				};
+			break;
+
+			case 82:
+				if(cthis.GameOver){
+					cthis.GamePlaying = true;
+					cthis.GameOver = false;
+					cthis.Player.hitPoints = 3;
+					cthis.Player.PlayerScore = 0;
+					cthis.CreateGoombas();
+				}
 		};
 	};
 	//same as above but it detects when a button is released
@@ -132,6 +160,12 @@ mbase.prototype.onload = function() {
 			CanvasWidth:cthis.Canvas.CanvasWidth,
 			CanvasHeigth:cthis.Canvas.CanvasHeigth,
 		});
+		if(cthis.Player.hitPoints <= 0){
+			cthis.GameOver = true;
+			cthis.GamePlaying = false;
+		}
+
+		
 
 		cthis.DetectHit();
 		//drawing player

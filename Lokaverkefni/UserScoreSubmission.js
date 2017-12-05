@@ -1,7 +1,13 @@
 function UserSubmissions(){}
 
 UserSubmissions.prototype.CreateLeaderboard = function(){
-
+	/*$.ajax({
+		url: "userScores.json",
+		dataType:"json",
+		success: function(result){
+			conosole.log(result)
+		}
+	});*/
 };
 UserSubmissions.prototype.CreateScoreSubmission = function(){
 	var UserNameInput = document.createElement("input");

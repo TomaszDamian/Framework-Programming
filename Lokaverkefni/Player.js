@@ -22,13 +22,14 @@ Player.prototype.Draw = function(args) {
 	on_canvas.fillText("Score:" + this.PlayerScore,0,20);
 	//drawing hp on canvas
 	on_canvas.font = "20px Arial";
-	on_canvas.fillText("Hp:" + this.hitPoints,1300,20);
+	on_canvas.fillText("Hp:" + this.hitPoints,800,20);
 
 };
 
 Player.prototype.AddScore = function(){
 	this.PlayerScore+=100;
 };
+
 Player.prototype.GetHit = function(){
 	this.hitPoints--;	
 }
