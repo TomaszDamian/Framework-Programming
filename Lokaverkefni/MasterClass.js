@@ -14,7 +14,8 @@ function mbase(){
 	
 	this.AmountCreated = 0;
 	this.AmountDead = 0;
-	this.Timer = 600; 
+	//softcaps at 300
+	this.Timer = 300; 
 	//softcap the amount of goombas to 1000 so it doesn't overload the whole system
 	this.amountToCreate = 1000;
 	this.gumbas=[];
@@ -150,6 +151,7 @@ mbase.prototype.onload = function() {
 		if(cthis.moveright){cthis.Player.xpos += 7};
 		//clearing canvas
 		cthis.Canvas.clearCanvas();
+		cthis.Canvas.clearStatCanvas();
 
 		cthis.detectCollision.borderCollison({
 			PlayerXpos:cthis.Player.xpos,
@@ -170,6 +172,7 @@ mbase.prototype.onload = function() {
 		cthis.DetectHit();
 		//drawing player
 		cthis.Player.Draw({on:cthis.Canvas.painter});
+		cthis.Player.DrawStats({on:cthis.Canvas.StatPainter});
 
 		//cthis.gumbas.first_gumba.Draw({on:cthis.Canvas.painter});
 		//cthis.gumbas.second_gumba.Draw({on:cthis.Canvas.painter});
