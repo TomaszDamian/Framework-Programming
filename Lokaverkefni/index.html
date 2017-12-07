@@ -1,0 +1,44 @@
+<style type="text/css">
+#CanvasDiv{
+	display: inline-grid;
+}
+#Leaderboard{
+	display: inline-grid;
+	margin-left: 10px;
+}
+#Leaderboard > h1{
+	text-align: left;
+}
+.LeaderboardContainer{
+	display: inline;
+}
+#UserNameDiv input{
+	border: 1px solid black;
+}
+</style>
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.css">
+
+<div id="CanvasDiv"></div>
+<div id="Leaderboard"></div>
+
+<div class="LeaderboardContainer">
+	<div id="UserNameDiv"></div>
+	<div id="Leaderboard"></div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="MasterClass.js"></script>
+<script src="Player.js"></script>
+<script src="Canvas.js"></script>
+<script src="Enemy.js"></script>
+<script src="Collision.js"></script>
+<script src="UserScoreSubmission.js"></script>
+
+<script>
+
+window.onload=function(){
+	ibase=new mbase();
+	ibase.onload();
+}
+</script>

@@ -1,3 +1,6 @@
+//disclaimer I do not own/make the code for collision detections and User submissions
+//I also did get some help with how to draw the Enemies on screen but everything else is made by me
+
 function mbase(){
 	//this makes it possible to call all the functions withing the master class
 	this.Canvas = new CreateCanvas({heigth:650,width:900});
@@ -9,13 +12,13 @@ function mbase(){
 	this.movedown = false;
 	this.moveleft = false;
 	this.moveright = false;
-	this.GamePlaying = true;
-	this.GameOver = true;
+	this.GamePlaying = false;
+	this.GameOver = false;
 	
 	this.AmountCreated = 0;
 	this.AmountDead = 0;
-	//softcaps at 300
-	this.Timer = 800; 
+	//softcaps at 160
+	this.Timer = 600; 
 	//softcap the amount of goombas to 1000 so it doesn't overload the whole system
 	this.amountToCreate = 1000;
 	this.gumbas=[];
@@ -24,6 +27,16 @@ function mbase(){
 mbase.prototype.DeleteEverything = function(){
 	this.gumbas=[];
 }
+
+mbase.prototype.EnableSubmitInput = function(){
+	var SubmitInput = document.getElementById('SubmitInput');
+	SubmitInput.disabled = false;
+};
+
+mbase.prototype.DisableSubmitInput = function(){
+	var SubmitInput = document.getElementById('SubmitInput');
+	SubmitInput.disabled = true;
+};
 
 mbase.prototype.CreateGoombas = function(){
 	cthis = this
@@ -42,7 +55,10 @@ mbase.prototype.CreateGoombas = function(){
 		};
 	}
 	else{
+		cthis.EnableSubmitInput();
 		cthis.DeleteEverything();
+		cthis.UserScores.isClicked = false;
+		cthis.UserScores.GetScore({ScoreSubmitted:cthis.Player.PlayerScore});
 	};
 };
 
@@ -77,50 +93,74 @@ mbase.prototype.DeleteGoomba = function(GoombaID) {
 	this.gumbas.splice(DeadGoomba, 1);
 	this.AmountCreated--;
 	this.AmountDead++;
+	this.DifficultyCurve();
 };
+
+mbase.prototype.DifficultyCurve = function(){
+	if(this.AmountDead === 10){
+		this.Timer -= 50
+		this.AmountDead = 0;
+		if(this.Timer < 160){
+			this.Timer = 160
+		}
+	}
+}
 
 mbase.prototype.onload = function() {
 	var cthis = this;
 
 	cthis.UserScores.CreateScoreSubmission();
-	cthis.UserScores.CreateLeaderboard();
-
+	cthis.UserScores.GetDataForLeaderboard();
+	cthis.UserScores.GetDataEvery10Seconds();
 	//this is for onkeydown
 	//detects if a key was pressed
 	document.onkeydown = function(event){
 		KeyPressed = event.keyCode
 		switch (KeyPressed) {
 			case 87:
-				cthis.moveup = true;
+				if(!cthis.UserScores.CanvasIgnored){
+					cthis.moveup = true;
+				}
 			break;
 			
 			case 83:
-				cthis.movedown = true;
+				if(!cthis.UserScores.CanvasIgnored){
+					cthis.movedown = true;
+				}
 			break;
 
 			case 65:
+			if(!cthis.UserScores.CanvasIgnored){
 				cthis.moveleft = true;
+			}
 			break;
 
 			case 68:
+			if(!cthis.UserScores.CanvasIgnored){
 				cthis.moveright = true;
+			}
 			break;
 
 			case 13:
+			if(!cthis.UserScores.CanvasIgnored){
 				if(!cthis.GamePlaying){
 					cthis.GamePlaying = true;
 					cthis.GameOver = false;
 					cthis.CreateGoombas();
 				};
+			}
 			break;
 
 			case 82:
+			if(!cthis.UserScores.CanvasIgnored){
 				if(cthis.GameOver){
 					cthis.GameOver = false;
 					cthis.Player.hitPoints = 3;
 					cthis.Player.PlayerScore = 0;
 					cthis.CreateGoombas();
+					cthis.DisableSubmitInput();
 				}
+			}
 		};
 	};
 	//same as above but it detects when a button is released
@@ -128,18 +168,26 @@ mbase.prototype.onload = function() {
 		KeyPressed = event.keyCode
 		switch (KeyPressed) {
 			case 87:
+			if(!cthis.UserScores.CanvasIgnored){
 				cthis.moveup = false;
+			}
 				break;
 			case 83:
+			if(!cthis.UserScores.CanvasIgnored){
 				cthis.movedown = false;
+			}
 				break;
 
 			case 65:
+			if(!cthis.UserScores.CanvasIgnored){
 				cthis.moveleft = false;
+			}
 				break;
 
 			case 68:
+			if(!cthis.UserScores.CanvasIgnored){
 				cthis.moveright = false;
+			}
 				break;
 		};
 	};
