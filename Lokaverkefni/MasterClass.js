@@ -1,7 +1,7 @@
 function mbase(){
 	//this makes it possible to call all the functions withing the master class
 	this.Canvas = new CreateCanvas({heigth:650,width:900});
-	this.Player = new Player({x:250,y:250,heigth:100,width:65,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png",Score:0});
+	this.Player = new Player({x:0,y:650,heigth:100,width:65,hp:3,PlayerModelLink:"https://i.imgur.com/0njuM9y.png",Score:0});
 	this.detectCollision = new CollisionDetection({});
 	this.UserScores = new UserSubmissions();
 
@@ -9,13 +9,13 @@ function mbase(){
 	this.movedown = false;
 	this.moveleft = false;
 	this.moveright = false;
-	this.GamePlaying = false;
-	this.GameOver = false;
+	this.GamePlaying = true;
+	this.GameOver = true;
 	
 	this.AmountCreated = 0;
 	this.AmountDead = 0;
 	//softcaps at 300
-	this.Timer = 300; 
+	this.Timer = 800; 
 	//softcap the amount of goombas to 1000 so it doesn't overload the whole system
 	this.amountToCreate = 1000;
 	this.gumbas=[];
@@ -27,7 +27,7 @@ mbase.prototype.DeleteEverything = function(){
 
 mbase.prototype.CreateGoombas = function(){
 	cthis = this
-	if(!cthis.GameOver === true){
+	if(!cthis.GameOver){
 		if(this.AmountCreated < this.amountToCreate){
 			setTimeout(function() {
 				cthis.AmountCreated++;
@@ -51,7 +51,7 @@ mbase.prototype.DetectHit = function(){
 	this.gumbas.forEach(function(CurrentGoomba){
 		var HitDetected = cthis.detectCollision.PlayerCollision({
 			Goomba:CurrentGoomba.Goomba,
-			Player:cthis.Player,
+			Player:cthis.Player
 		});
 		if(HitDetected){
 			cthis.Player.GetHit();
@@ -116,7 +116,6 @@ mbase.prototype.onload = function() {
 
 			case 82:
 				if(cthis.GameOver){
-					cthis.GamePlaying = true;
 					cthis.GameOver = false;
 					cthis.Player.hitPoints = 3;
 					cthis.Player.PlayerScore = 0;
@@ -162,9 +161,16 @@ mbase.prototype.onload = function() {
 			CanvasWidth:cthis.Canvas.CanvasWidth,
 			CanvasHeigth:cthis.Canvas.CanvasHeigth,
 		});
+
+		if(!cthis.GamePlaying){
+			cthis.Canvas.DrawMainMenu();
+		};
+		if(cthis.GameOver){
+			cthis.Canvas.DrawGameOver();
+		}
+
 		if(cthis.Player.hitPoints <= 0){
 			cthis.GameOver = true;
-			cthis.GamePlaying = false;
 		}
 
 		
